@@ -1,0 +1,199 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": ["airbnb", "airbnb-typescript"],
+  "plugins": ["@typescript-eslint"],
+  "ignorePatterns": ["src/rest-api/*"],
+  "rules": {
+    "linebreak-style": 0,
+    "max-len": ["error", { "code": 160, "ignoreComments": true }],
+    "max-classes-per-file": "off",
+    "quotes": ["error", "single"],
+    "jsx-quotes": ["error", "prefer-double"],
+    "comma-dangle": ["error", "never"],
+    "semi": ["error", "always"],
+    "block-spacing": ["error", "never"],
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "object-curly-newline": [
+      "error",
+      { "minProperties": 12, "consistent": true }
+    ],
+    "object-curly-spacing": ["error", "never"],
+    "no-bitwise": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "no-else-return": "off",
+    "no-await-in-loop": "off",
+    "no-multi-spaces": ["error", { "ignoreEOLComments": false }],
+    "no-multiple-empty-lines": [
+      "error",
+      { "max": 1, "maxEOF": 0, "maxBOF": 0 }
+    ],
+    "array-bracket-spacing": ["error", "never"],
+    "react/jsx-pascal-case": "off",
+    "react/jsx-props-no-spreading": "off",
+    "arrow-body-style": "off",
+    "one-var": "off",
+    "one-var-declaration-per-line": "off",
+    // need uncomment
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "no-nested-ternary": "off",
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": ["utility-types"],
+            "message": "Please use TS"
+          },
+          {
+            "group": ["apps/*"],
+            "message": "Use apps just in apps"
+          }
+        ]
+      }
+    ],
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "never",
+        "alphabetize": {
+          "order": "ignore"
+        },
+        "groups": ["external", "builtin", "parent", "sibling", "index"],
+        "pathGroups": [
+          {
+            "pattern": "utility-types",
+            "group": "external",
+            "position": "before"
+          },
+          { "pattern": "react", "group": "external", "position": "before" },
+          { "pattern": "react-dom", "group": "external", "position": "before" },
+          {
+            "pattern": "react-router-dom",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "react-redux",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "react-router-redux",
+            "group": "external",
+            "position": "before"
+          },
+          { "pattern": "redux", "group": "external", "position": "before" },
+          {
+            "pattern": "redux-form",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "redux-thunk",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "redux-mock-store",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@redux-devtools/**",
+            "group": "external",
+            "position": "before"
+          },
+          { "pattern": "lodash", "group": "external", "position": "before" },
+          { "pattern": "enzyme", "group": "external", "position": "before" },
+          { "pattern": "moment", "group": "external", "position": "before" },
+          { "pattern": "history", "group": "external", "position": "before" },
+          { "pattern": "qs", "group": "external", "position": "before" },
+          { "pattern": "axios", "group": "external", "position": "before" },
+          {
+            "pattern": "axios-mock-adapter",
+            "group": "external",
+            "position": "before"
+          },
+          { "pattern": "reselect", "group": "external", "position": "before" },
+          { "pattern": "i18next", "group": "external", "position": "before" },
+          {
+            "pattern": "styled-components",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@openvtb/**",
+            "group": "external",
+            "position": "before"
+          },
+          { "pattern": "@vtb/**", "group": "external", "position": "before" },
+          {
+            "pattern": "@vtb-ermo/**",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@vtb-rmvk/**",
+            "group": "external",
+            "position": "before"
+          },
+          { "pattern": "types/**", "group": "builtin", "position": "before" },
+          {
+            "pattern": "constants/**",
+            "group": "builtin",
+            "position": "before"
+          },
+          {
+            "pattern": "dictionaries/**",
+            "group": "builtin",
+            "position": "before"
+          },
+          {
+            "pattern": "components/**",
+            "group": "builtin",
+            "position": "before"
+          },
+          { "pattern": "utils/**", "group": "builtin", "position": "before" }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"]
+      }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "enum",
+        "format": ["UPPER_CASE", "PascalCase"]
+      }
+    ],
+    "@typescript-eslint/object-curly-spacing": ["error", "never"],
+    "@typescript-eslint/no-use-before-define": "off",
+    "default-param-last": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/comma-dangle": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "import/no-extraneous-dependencies": "off",
+    "react/require-default-props": "off",
+    "react/prop-types": "off",
+    "react/no-array-index-key": "off",
+    "react/destructuring-assignment": "off",
+    "react/function-component-definition": "off",
+    "@typescript-eslint/no-shadow": "off",
+    "react/no-unstable-nested-components": "off",
+    "consistent-return": "off",
+    "no-lone-blocks": "off",
+    "no-console": "off",
+    "no-plusplus": "off"
+  },
+  "globals": {
+    "window": true,
+    "document": true
+  }
+}
