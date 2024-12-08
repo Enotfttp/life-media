@@ -1,8 +1,8 @@
-import {Component, ErrorInfo, ReactNode} from 'react';
-import {ErrorScreen} from './components';
+import React, {Component, ErrorInfo, ReactNode} from 'react';
+import {ErrorScreen} from 'src/copmonents/ErrorBoundary/components';
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 interface State {
@@ -15,7 +15,6 @@ class ErrorBoundary extends Component<Props, State> {
   };
 
   public static getDerivedStateFromError(_: Error): State {
-    // Update state so the next render will show the fallback UI.
     return {hasError: true};
   }
 
@@ -25,8 +24,9 @@ class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
-      return ErrorScreen;
+      return <ErrorScreen />;
     }
+
     return this.props.children;
   }
 }
