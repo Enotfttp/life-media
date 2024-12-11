@@ -6,6 +6,7 @@ create TABLE users(
     lastName VARCHAR(255),
     login VARCHAR(255),
     password VARCHAR(255),
+    photo VARCHAR(255),
     chat_id INTEGER,
     order_id INTEGER,
     role_id INTEGER
