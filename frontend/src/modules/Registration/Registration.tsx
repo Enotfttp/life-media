@@ -5,6 +5,7 @@ import {InputField} from 'src/UI';
 import {PasswordField} from 'src/UI/PasswordField/PasswordField';
 
 interface IRegistrationProps {
+  handleOpen: (isShow: boolean) => void;
   setIsOpenRegistrationModal: (isShow: boolean) => void;
 }
 
@@ -40,7 +41,7 @@ export const Registration = ({setIsOpenRegistrationModal}: IRegistrationProps) =
             <InputField name="login" label="Логин" />
             <PasswordField name="password" label="Пароль" />
             <PasswordField name="repeatPassword" label="Пароль" />
-            <Button type="submit" variant="contained">Войти</Button>
+            <Button type="submit" variant="contained">Зарегистрироваться</Button>
             <Stack
               useFlexGap
               spacing={1}

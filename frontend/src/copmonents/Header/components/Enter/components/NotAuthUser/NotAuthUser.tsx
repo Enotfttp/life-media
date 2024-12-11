@@ -16,10 +16,12 @@ export const NotAuthUser = () => {
       <Modal isOpen={isOpen} handleOpen={handleOpen}>
         {isOpenRegistrationModal ? (
           <Registration
+            handleOpen={handleOpen}
             setIsOpenRegistrationModal={setIsOpenRegistrationModal}
           />
         ) : (
           <Login
+            handleOpen={handleOpen}
             setIsOpenRegistrationModal={setIsOpenRegistrationModal}
           />
         )}

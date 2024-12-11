@@ -5,7 +5,7 @@ export const ErrorScreen = () => {
   return (
     <>
       <Typography variant="h1" component="h2">
-        Произошли непредвиденные проблемы
+        Упс..., что-то пошло не так
       </Typography>
       <Button variant="text">Вернуться на домашнюю страницу</Button>
     </>

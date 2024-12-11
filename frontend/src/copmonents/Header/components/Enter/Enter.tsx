@@ -1,9 +1,13 @@
 import React from 'react';
 import {Stack} from '@mui/material';
+import {QueryCache} from '@tanstack/react-query';
 import {AuthUser, NotAuthUser} from './components';
 
-const isAuth = false;
 export const Enter = () => {
+  const queryCache = new QueryCache();
+  const isAuth = queryCache.find({queryKey: ['user']});
+
+  console.log('isAuth = ', isAuth);
   return (
     <Stack
       useFlexGap

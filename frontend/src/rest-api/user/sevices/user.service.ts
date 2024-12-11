@@ -2,7 +2,8 @@ import axios from "axios";
 import {IUser} from '../models'
 
 class UserService {
-    private URL = process.env.API_URL + '/user'
+    // private URL = process.env.API_BASE_URL  + '/user'
+    private URL = 'http://localhost:8080/api' + '/user'
 
     createUser() {
         return axios.post<IUser[]>(this.URL + '/create')
@@ -24,8 +25,9 @@ class UserService {
         return axios.delete<IUser>(this.URL + `/${id}`)
     }
 
-    loginUser({login, password}: { login: string, password: string }) {
-        return axios.post<IUser>(this.URL + '/login', {login, password})
+    loginUser(body: { login: string, password: string }) {
+        console.log('TUT = ', body)
+        return axios.post<IUser>(this.URL + '/login', body)
     }
 
     registrationUser(body: Omit<IUser, 'chat_id' & 'order_id' & 'role_id'>) {
