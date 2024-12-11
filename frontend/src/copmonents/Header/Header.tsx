@@ -2,17 +2,7 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import {Container, TextField} from '@mui/material';
 import {Enter} from './components';
-
-const style = {
-  '&.MuiContainer-maxWidthXl': {
-    maxWidth: '100%'
-  },
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  height: '80px',
-  boxShadow: '0px 5px 20px #26491996'
-};
+import {style} from './Header.styled';
 
 export const Header = () => {
   return (

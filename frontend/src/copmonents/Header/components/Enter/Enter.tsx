@@ -3,9 +3,9 @@ import {Stack, Badge, Avatar, IconButton} from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import LoginIcon from '@mui/icons-material/Login';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import {Login, Registration} from '../index';
+import {Login, Registration} from 'src/modules/index';
 
-const isAuth = true;
+const isAuth = false;
 export const Enter = () => {
   const [isOpenLoginModal, setIsOpenLoginModal] = React.useState(false);
   const [isOpenRegistrationModal, setIsOpenRegistrationModal] = React.useState(false);

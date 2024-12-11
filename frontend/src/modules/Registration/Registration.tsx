@@ -1,24 +1,13 @@
 import React from 'react';
 import {Modal, Fade, Box, Typography, Backdrop} from '@mui/material';
+import {style} from './Registration.styled';
 
-interface LoginProps {
+interface RegistrationProps {
   isOpen: boolean;
   handleOpen: (isShow: boolean) => void;
 }
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4
-};
-
-export const Login = ({isOpen, handleOpen}: LoginProps) => {
+export const Registration = ({isOpen, handleOpen}: RegistrationProps) => {
   return (
     <Modal
       aria-labelledby="transition-modal-title"

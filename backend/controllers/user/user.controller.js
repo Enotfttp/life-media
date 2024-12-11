@@ -97,30 +97,6 @@ class UserController {
         }
     }
 
-    // /**
-    //  * Задел на будущее
-    //  * Нужен будет для удления acces_token
-    //  */
-    // async logoutUser(_, res) {
-    //     try {
-    //     } catch (e) {
-    //         console.error('Ошибка во время выхода:', e);
-    //         return res.status(400).json({error: e.message});
-    //     }
-    // }
-    //
-    // /**
-    //  * Задел на будущее
-    //  * Нужен будет для удления acces_token
-    //  */
-    // async refresh(_, res) {
-    //     try {
-    //     } catch (e) {
-    //         console.error('Ошибка во время регистрации:', e);
-    //         return res.status(400).json({error: e.message});
-    //     }
-    // }
-
 
 }
 

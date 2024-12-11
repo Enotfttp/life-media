@@ -1,7 +1,11 @@
-import styled from 'styled-components';
-
-export const StyleFooter = styled.div`
-    height: 150px;
-    width: 100%;
-    background-color: #26491996;
-`;
+export const style = {
+  '&.MuiContainer-maxWidthXl': {
+    maxWidth: '100%'
+  },
+  backgroundColor: '#26491996',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  height: '150px',
+  color: '#fff'
+};

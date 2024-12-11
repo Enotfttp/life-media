@@ -10,7 +10,7 @@ export const routesConfig: RouteProps[] = [
     children: null
   },
   {
-    path: '/chats',
+    path: '/chat',
     children: null
   }
 ];
