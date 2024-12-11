@@ -1,47 +1,69 @@
 import React from 'react';
 import {Typography, Stack, Button} from '@mui/material';
 import {Form} from 'react-final-form';
-import {InputField, Modal} from 'src/UI';
+import {InputField} from 'src/UI';
+import {PasswordField} from 'src/UI/PasswordField/PasswordField';
 
-interface LoginProps {
-  isOpen: boolean;
-  handleOpen: (isShow: boolean) => void;
+interface ILoginProps {
+  setIsOpenRegistrationModal: (isShow: boolean) => void;
 }
 
-export const Login = ({isOpen, handleOpen}: LoginProps) => {
-  const initialState = React.useMemo(() => ({
+interface IInitial {
+  login: string,
+  password: string
+}
+
+export const Login = ({setIsOpenRegistrationModal}: ILoginProps) => {
+  const initialState: IInitial = React.useMemo(() => ({
     login: '',
     password: ''
   }), []);
 
-  const onSubmit = () => {
-
+  const onSubmit = (values: IInitial) => {
+    console.log('values = ', values);
   };
 
   return (
-    <Modal isOpen={isOpen} handleOpen={handleOpen}>
-      <Form initialValues={initialState} onSubmit={onSubmit}>
-        {(props) => (
-          <form onSubmit={props.handleSubmit}>
+    <Form<IInitial> initialValues={initialState} onSubmit={onSubmit}>
+      {(props) => (
+        <form onSubmit={props.handleSubmit}>
+          <Stack
+            useFlexGap
+            spacing={2}
+            direction="column"
+            sx={{
+              alignItems: 'center'
+            }}
+          >
+            <Typography id="transition-modal-title" variant="h6" component="h2">
+              Авторизация
+            </Typography>
+            <InputField name="login" label="Логин" type="email" />
+            <PasswordField name="password" label="Пароль" />
+            <Button type="submit" variant="contained">Войти</Button>
             <Stack
               useFlexGap
-              spacing={2}
-              direction="column"
+              spacing={1}
+              direction="row"
               sx={{
-                alignItems: 'center'
+                alignItems: 'center', fontSize: '16px'
               }}
             >
-              <Typography id="transition-modal-title" variant="h6" component="h2">
-                Авторизация
-              </Typography>
-              <InputField name="login" label="Логин" />
-              <InputField name="password" type="password" label="Пароль" />
-              <Button type="submit">Войти</Button>
-
+              <Typography>У вас нет учетной записи?</Typography>
+              <Button
+                variant="text"
+                sx={{
+                  textTransform: 'math-auto',
+                  backgroundColor: 'transparent'
+                }}
+                onClick={() => setIsOpenRegistrationModal(true)}
+              >
+                <Typography>Зарегестрироваться</Typography>
+              </Button>
             </Stack>
-          </form>
-        )}
-      </Form>
-    </Modal>
+          </Stack>
+        </form>
+      )}
+    </Form>
   );
 };
