@@ -58,7 +58,7 @@ export const Registration = ({setIsOpenRegistrationModal}: IRegistrationProps) =
                 }}
                 onClick={() => setIsOpenRegistrationModal(false)}
               >
-                <Typography>Авторизация</Typography>
+                <Typography>Авторизироваться</Typography>
               </Button>
             </Stack>
           </Stack>

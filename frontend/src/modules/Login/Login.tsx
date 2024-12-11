@@ -38,8 +38,16 @@ export const Login = ({setIsOpenRegistrationModal}: ILoginProps) => {
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Авторизация
             </Typography>
-            <InputField name="login" label="Логин" type="email" />
-            <PasswordField name="password" label="Пароль" />
+            <InputField
+              required
+              name="login"
+              label="Логин"
+            />
+            <PasswordField
+              required
+              name="password"
+              label="Пароль"
+            />
             <Button type="submit" variant="contained">Войти</Button>
             <Stack
               useFlexGap
@@ -58,7 +66,7 @@ export const Login = ({setIsOpenRegistrationModal}: ILoginProps) => {
                 }}
                 onClick={() => setIsOpenRegistrationModal(true)}
               >
-                <Typography>Зарегестрироваться</Typography>
+                <Typography>Зарегистрироваться</Typography>
               </Button>
             </Stack>
           </Stack>
