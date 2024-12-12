@@ -10,6 +10,7 @@ interface Props extends FieldProps<string, any> {
 
 export const PasswordField = ({label, maxLength = 255, required, ...props}: Props) => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [isRequired, setRequired] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -21,15 +22,21 @@ export const PasswordField = ({label, maxLength = 255, required, ...props}: Prop
     event.preventDefault();
   };
 
-  const validate = (value: string) => {
-    if (!required) return false;
+  const changeRequire = () => {
+    if (required) setRequired(true);
+  };
+
+  const validate = (value: string, allValues: any, meta: any) => {
+    console.log('allValues = ', allValues);
+    if (typeof props?.validate === 'function') return props.validate(value, allValues, meta);
+    if (!isRequired) return false;
     if (!value) {
       return 'Данное поле обязательное';
     }
   };
 
   return (
-    <Field {...props} component="input" validate={required ? validate : props.validate}>
+    <Field {...props} component="input" validate={validate}>
       {({input, meta}) => {
         const handleChange = ({currentTarget: {value}}: ChangeEvent<HTMLInputElement>) => {
           // Ограничиваем ввод, если указан maxLength (admiral-ds предупреждает, но не ограничивает)
@@ -52,6 +59,7 @@ export const PasswordField = ({label, maxLength = 255, required, ...props}: Prop
               id="outlined-adornment-password"
               type={showPassword ? 'text' : 'password'}
               onChange={handleChange}
+              onKeyUp={changeRequire}
               label={label}
               error={meta.error}
               endAdornment={(

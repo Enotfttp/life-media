@@ -3,7 +3,7 @@ import {Typography, Stack, Button} from '@mui/material';
 import {Form} from 'react-final-form';
 import {InputField} from 'src/UI';
 import {PasswordField} from 'src/UI/PasswordField/PasswordField';
-import {useLoginUser} from 'src/rest-api/user/hooks';
+import {useMutationLoginUser} from 'src/rest-api/user/hooks';
 
 interface ILoginProps {
   handleOpen: (isShow: boolean) => void;
@@ -16,14 +16,14 @@ interface IInitial {
 }
 
 export const Login = ({setIsOpenRegistrationModal, handleOpen}: ILoginProps) => {
+  const {mutate, isSuccess} = useMutationLoginUser();
   const initialState: IInitial = React.useMemo(() => ({
     login: '',
     password: ''
   }), []);
 
   const onSubmit = (values: IInitial) => {
-    const {isSuccess} = useLoginUser(values);
-
+    mutate(values);
     if (isSuccess) {
       handleOpen(false);
     }

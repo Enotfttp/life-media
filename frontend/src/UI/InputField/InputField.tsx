@@ -9,15 +9,22 @@ interface Props extends FieldProps<string, any> {
 }
 
 export const InputField = ({label, required, maxLength = 255, ...props}: Props) => {
-  const validate = (value: string) => {
-    if (!required) return false;
+  const [isRequired, setRequired] = React.useState(false);
+
+  const changeRequire = () => {
+    if (required) setRequired(true);
+  };
+
+  const validate = (value: string, allValues: any, meta: any) => {
+    if (typeof props?.validate === 'function') return props.validate(value, allValues, meta);
+    if (!isRequired) return false;
     if (!value) {
       return 'Данное поле обязательное';
     }
   };
 
   return (
-    <Field {...props} component="input" validate={required ? validate : props.validate}>
+    <Field {...props} component="input" validate={validate}>
       {({input, meta}) => {
         const handleChange = ({currentTarget: {value}}: ChangeEvent<HTMLInputElement>) => {
           // Ограничиваем ввод, если указан maxLength (admiral-ds предупреждает, но не ограничивает)
@@ -34,6 +41,7 @@ export const InputField = ({label, required, maxLength = 255, ...props}: Props) 
               {...input}
               label={label}
               variant="outlined"
+              onKeyUp={changeRequire}
               onChange={handleChange}
               error={meta.error}
               helperText={meta.error || ''}

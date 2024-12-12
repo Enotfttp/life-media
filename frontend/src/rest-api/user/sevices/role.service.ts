@@ -2,8 +2,7 @@ import axios from "axios";
 import {IRole} from "src/rest-api/user/models";
 
 class RoleService {
-    // private URL = process.env.API_BASE_URL + '/role'
-    private URL = 'http://localhost:8080/api' + '/role'
+    private URL = process.env.BASE_API_URL + '/role'
 
     createRole() {
         return axios.post<IRole[]>(this.URL + '/create')

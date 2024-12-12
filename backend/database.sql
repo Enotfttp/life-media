@@ -2,7 +2,7 @@ create TABLE users(
     id Serial PRIMARY KEY,
     email VARCHAR(255) UNIQUE,
     firstName VARCHAR(255),
-    surname VARCHAR(255),
+    patronymic VARCHAR(255),
     lastName VARCHAR(255),
     login VARCHAR(255),
     password VARCHAR(255),

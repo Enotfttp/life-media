@@ -2,8 +2,7 @@ import axios from "axios";
 import {IUser} from '../models'
 
 class UserService {
-    // private URL = process.env.API_BASE_URL  + '/user'
-    private URL = 'http://localhost:8080/api' + '/user'
+    private URL = process.env.BASE_API_URL + '/user'
 
     createUser() {
         return axios.post<IUser[]>(this.URL + '/create')
@@ -30,7 +29,7 @@ class UserService {
         return axios.post<IUser>(this.URL + '/login', body)
     }
 
-    registrationUser(body: Omit<IUser, 'chat_id' & 'order_id' & 'role_id'>) {
+    registrationUser(body: Omit<IUser, 'id' | 'chat_id' | 'order_id' | 'role_id'>) {
         return axios.post<IUser>(this.URL + '/registration', body)
     }
 }
