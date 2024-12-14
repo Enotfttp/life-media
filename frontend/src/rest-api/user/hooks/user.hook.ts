@@ -27,6 +27,11 @@ export function useMutationLoginUser() {
 
 export function useMutationRegistrationUser() {
     return useMutation({
-        mutationFn: async (body: Omit<IUser, 'id' | 'chat_id' | 'order_id' | 'role_id'>) => await userService.registrationUser(body),
-    })
+            mutationFn: async (body: Omit<IUser, 'id' | 'chat_id' | 'order_id' | 'role_id'>) => await userService.registrationUser(body),
+            // onError: (error) => {
+            //     console.error('Ошибка мутации:', error);
+            //     return error.response?.data?.error || "Произошла ошибка";
+            // },
+        },
+    )
 }

@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 class UserController {
     async createUser(req, res) {
         try {
-            console.log('test')
             const {
                 email, firstName,
                 patronymic, lastName, login, password
@@ -13,12 +12,10 @@ class UserController {
                 patronymic, lastName, login, password]);
 
             return res.json(rows[0])
-
         } catch (e) {
             console.error('Ошибка во время создания пользователя:', e);
             return res.status(400).json({error: e.message});
         }
-
     }
 
     async getUsers(_, res) {
@@ -104,7 +101,6 @@ class UserController {
             return res.status(400).json({error: e.message});
         }
     }
-
 }
 
 module.exports = UserController;

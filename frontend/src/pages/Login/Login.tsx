@@ -4,13 +4,14 @@ import {Form} from 'react-final-form';
 import {InputField} from 'src/UI';
 import {PasswordField} from 'src/UI/PasswordField/PasswordField';
 import {useMutationLoginUser} from 'src/rest-api/user/hooks';
+import {validate} from './Login.utils';
 
 interface ILoginProps {
   handleOpen: (isShow: boolean) => void;
   setIsOpenRegistrationModal: (isShow: boolean) => void;
 }
 
-interface IInitial {
+export interface IInitial {
   login: string,
   password: string
 }
@@ -30,7 +31,11 @@ export const Login = ({setIsOpenRegistrationModal, handleOpen}: ILoginProps) => 
   };
 
   return (
-    <Form<IInitial> initialValues={initialState} onSubmit={onSubmit}>
+    <Form<IInitial>
+      initialValues={initialState}
+      onSubmit={onSubmit}
+      validate={validate}
+    >
       {(props) => (
         <form onSubmit={props.handleSubmit}>
           <Stack
@@ -45,7 +50,6 @@ export const Login = ({setIsOpenRegistrationModal, handleOpen}: ILoginProps) => 
               Авторизация
             </Typography>
             <InputField
-              required
               name="login"
               label="Логин"
             />

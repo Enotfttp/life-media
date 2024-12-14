@@ -1,7 +1,7 @@
 import React from 'react';
 import {IconButton} from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
-import {Login, Registration} from 'src/modules/index';
+import {Login, Registration} from 'src/pages/index';
 import {Modal} from 'src/UI';
 
 export const NotAuthUser = () => {
