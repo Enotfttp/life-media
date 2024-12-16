@@ -4,12 +4,12 @@ import {IInitial} from './Registration';
 export const validate = (values: IInitial) => {
   const errors: Partial<IInitial> = {};
 
-  if (!values?.firstName) {
-    errors.firstName = required(values?.firstName);
+  if (!values?.firstname) {
+    errors.firstname = required(values?.firstname);
   }
 
-  if (!values?.lastName) {
-    errors.lastName = required(values?.lastName);
+  if (!values?.lastname) {
+    errors.lastname = required(values?.lastname);
   }
 
   if (!values?.patronymic) {
@@ -32,6 +32,7 @@ export const validate = (values: IInitial) => {
   }
 
   if ((values?.password || values?.repeatPassword) && values?.password !== values?.repeatPassword) {
+    // eslint-disable-next-line no-multi-assign
     errors.password = errors.repeatPassword = 'Пароли не совпадают';
   }
 

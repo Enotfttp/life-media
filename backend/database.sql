@@ -1,5 +1,5 @@
 create TABLE users(
-    id Serial PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     email VARCHAR(255) UNIQUE,
     firstName VARCHAR(255),
     patronymic VARCHAR(255),
@@ -7,37 +7,37 @@ create TABLE users(
     login VARCHAR(255),
     password VARCHAR(255),
     photo VARCHAR(255),
-    chat_id INTEGER,
-    order_id INTEGER,
-    role_id INTEGER
+    chat_id VARCHAR(255),
+    order_id VARCHAR(255),
+    role_id VARCHAR(255)
 );
 
 create TABLE roles(
-    id Serial PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     name_role VARCHAR(255)
 );
 
 create TABLE orders(
-    id Serial PRIMARY KEY,
-    order_statuses_id INTEGER,
-    product_id INTEGER
+    id VARCHAR(255) PRIMARY KEY,
+    order_statuses_id VARCHAR(255),
+    product_id VARCHAR(255)
 );
 
 create TABLE order_statuses(
-    id Serial PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     name_status VARCHAR(255)
 );
 
 create TABLE products(
-    id Serial PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     name_product VARCHAR(255),
     cost INTEGER,
     count INTEGER,
-    description_id INTEGER
+    description_id VARCHAR(255)
 );
 
 create TABLE descriptions(
-    id Serial PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     description VARCHAR(255),
     weight INTEGER,
     width INTEGER,
@@ -48,27 +48,27 @@ create TABLE descriptions(
 );
 
 create TABLE chats(
-    id Serial PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
 --     Пользователь, который учавстует в переписке
-    user_id INTEGER
+    user_id VARCHAR(255)
 );
 
 create TABLE chat_message(
-    id Serial PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     message VARCHAR(300),
     date_message TIMESTAMP,
     file VARCHAR(300),
 --     Пользователь, который добавил сообщение
-    user_id INTEGER,
-    chat_id INTEGER
+    user_id VARCHAR(255),
+    chat_id VARCHAR(255)
 );
 
 
 create TABLE chat_statuses(
-    id Serial PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     is_read boolean,
 --     Пользователь с которым происходит общение
-    user_id INTEGER
+    user_id VARCHAR(255)
 );
 
 

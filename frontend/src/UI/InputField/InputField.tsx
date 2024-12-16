@@ -8,10 +8,13 @@ interface Props extends FieldProps<string, any> {
 }
 
 export const InputField = ({label, maxLength = 255, ...props}: Props) => {
+  const [isTouch, setTouch] = React.useState(false);
+
   return (
     <Field {...props} component="input">
       {({input, meta}) => {
         const handleChange = ({currentTarget: {value}}: ChangeEvent<HTMLInputElement>) => {
+          setTouch(true);
           // Ограничиваем ввод, если указан maxLength (admiral-ds предупреждает, но не ограничивает)
           if (value.length === maxLength + 1) {
             return;
@@ -27,8 +30,8 @@ export const InputField = ({label, maxLength = 255, ...props}: Props) => {
               label={label}
               variant="outlined"
               onChange={handleChange}
-              error={meta.error}
-              helperText={meta.error || ''}
+              error={isTouch && meta.error}
+              helperText={isTouch && (meta.error || '')}
             />
           </FormControl>
         );

@@ -1,9 +1,26 @@
 import React from 'react';
-import {Badge, Avatar, IconButton} from '@mui/material';
+import {Badge, Avatar, IconButton, MenuItem, Menu} from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import {getCurrentUser} from 'src/rest-api/user/hooks';
 
-export const AuthUser = () => {
+export const AuthUser = ({userId, setUserId}: {userId: string, setUserId: (id: string | null) => void}) => {
+  const {data} = getCurrentUser(userId);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleMenuOpen = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const logout = () => {
+    setAnchorEl(null);
+    setUserId(null);
+    localStorage.clear();
+  };
+
   return (
     <>
       <IconButton>
@@ -17,7 +34,19 @@ export const AuthUser = () => {
         </Badge>
       </IconButton>
       <IconButton>
-        <Avatar alt="Лепахин" src="/static/images/avatar/1.jpg" />
+        <Avatar
+          alt={data?.lastname || '-'}
+          src="/static/images/avatar/1.jpg"
+          onClick={handleMenuOpen}
+        />
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={handleMenuClose}>Личный кабинет</MenuItem>
+          <MenuItem onClick={logout}>Выйти</MenuItem>
+        </Menu>
       </IconButton>
     </>
   );

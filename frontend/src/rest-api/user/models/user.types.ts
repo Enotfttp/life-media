@@ -1,9 +1,9 @@
 export interface IUser {
-    id: number,
+    id: string,
     email: string,
-    firstName: string,
+    firstname: string,
     patronymic: string,
-    lastName: string,
+    lastname: string,
     login: string,
     password: string,
     chat_id: number,

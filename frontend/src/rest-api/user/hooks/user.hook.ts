@@ -35,3 +35,13 @@ export function useMutationRegistrationUser() {
         },
     )
 }
+
+export const getCurrentUser = (id: string) => {
+    return useQuery({
+        queryKey: ['user'],
+        refetchInterval: 60 * 60 * 1000, // обновляем каждый 1 час
+        staleTime: 60 * 60 * 1000,
+        queryFn: async () => await userService.getUser(id),
+        select: (data) => data.data as IUser,
+    })
+}

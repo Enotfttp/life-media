@@ -1,5 +1,5 @@
 import React from 'react';
-import {Typography, Stack, Button} from '@mui/material';
+import {Typography, Stack, Button, Alert} from '@mui/material';
 import {Form} from 'react-final-form';
 import {InputField} from 'src/UI';
 import {PasswordField} from 'src/UI/PasswordField/PasswordField';
@@ -8,6 +8,7 @@ import {validate} from './Login.utils';
 
 interface ILoginProps {
   handleOpen: (isShow: boolean) => void;
+  setUserId: (id: string) => void;
   setIsOpenRegistrationModal: (isShow: boolean) => void;
 }
 
@@ -16,17 +17,24 @@ export interface IInitial {
   password: string
 }
 
-export const Login = ({setIsOpenRegistrationModal, handleOpen}: ILoginProps) => {
-  const {mutate, isSuccess} = useMutationLoginUser();
+export const Login = ({setIsOpenRegistrationModal, handleOpen, setUserId}: ILoginProps) => {
+  const [error, setError] = React.useState('');
+  const {mutateAsync} = useMutationLoginUser();
   const initialState: IInitial = React.useMemo(() => ({
     login: '',
     password: ''
   }), []);
 
-  const onSubmit = (values: IInitial) => {
-    mutate(values);
-    if (isSuccess) {
+  const onSubmit = async (values: IInitial) => {
+    try {
+      setError('');
+
+      const {data} = await mutateAsync(values);
+      setUserId(data.id);
+      localStorage.setItem('id', data.id);
       handleOpen(false);
+    } catch (e: any) {
+      setError(e?.response?.data?.error || 'Произошла ошибка');
     }
   };
 
@@ -49,6 +57,18 @@ export const Login = ({setIsOpenRegistrationModal, handleOpen}: ILoginProps) => 
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Авторизация
             </Typography>
+
+            {error && (
+            <Alert
+              severity="error"
+              sx={{
+                width: '100%'
+              }}
+            >
+              {error}
+            </Alert>
+            )}
+
             <InputField
               name="login"
               label="Логин"

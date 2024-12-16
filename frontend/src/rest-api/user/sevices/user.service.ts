@@ -12,7 +12,7 @@ class UserService {
         return axios.get<IUser[]>(this.URL + '/list')
     }
 
-    getUser(id: number) {
+    getUser(id: string) {
         return axios.get<IUser>(this.URL + `/${id}`)
     }
 
@@ -25,7 +25,6 @@ class UserService {
     }
 
     loginUser(body: { login: string, password: string }) {
-        console.log('TUT = ', body)
         return axios.post<IUser>(this.URL + '/login', body)
     }
 

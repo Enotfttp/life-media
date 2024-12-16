@@ -4,7 +4,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import {Login, Registration} from 'src/pages/index';
 import {Modal} from 'src/UI';
 
-export const NotAuthUser = () => {
+export const NotAuthUser = ({setUserId}: {setUserId: (id: string) => void}) => {
   const [isOpen, handleOpen] = React.useState(false);
   const [isOpenRegistrationModal, setIsOpenRegistrationModal] = React.useState(false);
 
@@ -22,6 +22,7 @@ export const NotAuthUser = () => {
           <Login
             handleOpen={handleOpen}
             setIsOpenRegistrationModal={setIsOpenRegistrationModal}
+            setUserId={setUserId}
           />
         )}
       </Modal>

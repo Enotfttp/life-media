@@ -9,6 +9,7 @@ interface Props extends FieldProps<string, any> {
 
 export const PasswordField = ({label, maxLength = 255, ...props}: Props) => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [isTouch, setTouch] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -24,6 +25,7 @@ export const PasswordField = ({label, maxLength = 255, ...props}: Props) => {
     <Field {...props} component="input">
       {({input, meta}) => {
         const handleChange = ({currentTarget: {value}}: ChangeEvent<HTMLInputElement>) => {
+          setTouch(true);
           // Ограничиваем ввод, если указан maxLength (admiral-ds предупреждает, но не ограничивает)
           if (value.length === maxLength + 1) {
             return;
@@ -35,7 +37,7 @@ export const PasswordField = ({label, maxLength = 255, ...props}: Props) => {
           <FormControl sx={{m: 1, width: '100%'}} variant="outlined">
             <InputLabel
               htmlFor="outlined-adornment-password"
-              error={meta.error}
+              error={isTouch && meta.error}
             >
               {label}
             </InputLabel>
@@ -45,7 +47,7 @@ export const PasswordField = ({label, maxLength = 255, ...props}: Props) => {
               type={showPassword ? 'text' : 'password'}
               onChange={handleChange}
               label={label}
-              error={meta.error}
+              error={isTouch && meta.error}
               endAdornment={(
                 <InputAdornment position="end">
                   <IconButton
@@ -60,7 +62,7 @@ export const PasswordField = ({label, maxLength = 255, ...props}: Props) => {
                 </InputAdornment>
                             )}
             />
-            {meta.error && (
+            {isTouch && meta.error && (
             <FormHelperText sx={{color: '#d32f2f'}}>
               {meta.error || ''}
             </FormHelperText>

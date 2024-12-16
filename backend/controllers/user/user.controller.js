@@ -1,15 +1,19 @@
 const db = require('../../db');
 const bcrypt = require('bcrypt');
+const {
+    v4: uuidv4,
+} = require('uuid');
 
 class UserController {
     async createUser(req, res) {
         try {
             const {
-                email, firstName,
-                patronymic, lastName, login, password
+                id,
+                email, firstname,
+                patronymic, lastname, login, password
             } = req.body;
-            const {rows} = await db.query(`INSERT INTO users (email, firstName, patronymic,lastName, login, password) values($1, $2, $3,$4, $5, $6) RETURNING *`, [email, firstName,
-                patronymic, lastName, login, password]);
+            const {rows} = await db.query(`INSERT INTO users (id,email, firstname, patronymic, lastname, login, password) values($1,$2, $3, $4,$5, $6, $7) RETURNING *`, [id, email, firstname,
+                patronymic, lastname, login, password]);
 
             return res.json(rows[0])
         } catch (e) {
@@ -43,8 +47,8 @@ class UserController {
 
     async updateUser(req, res) {
         try {
-            const {id, firstName, surname} = req.body
-            const {rows} = await db.query(`UPDATE users set firstName = $1, surname = $2 WHERE id = $3 RETURNING *`, [firstName, surname, id]);
+            const {id, firstname, surname} = req.body
+            const {rows} = await db.query(`UPDATE users set firstName = $1, surname = $2 WHERE id = $3 RETURNING *`, [firstname, surname, id]);
 
             res.json(rows[0]);
         } catch (e) {
@@ -95,7 +99,7 @@ class UserController {
             }
             const hashPassword = await bcrypt.hash(password, 10);
 
-            return await this.createUser({...req, body: {...req.body, password: hashPassword}}, res);
+            return await this.createUser({...req, body: {...req.body, password: hashPassword, id: uuidv4()}}, res);
         } catch (e) {
             console.error('Ошибка во время регистрации:', e);
             return res.status(400).json({error: e.message});

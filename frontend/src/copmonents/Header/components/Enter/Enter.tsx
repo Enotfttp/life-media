@@ -1,13 +1,10 @@
 import React from 'react';
 import {Stack} from '@mui/material';
-import {QueryCache} from '@tanstack/react-query';
 import {AuthUser, NotAuthUser} from './components';
 
 export const Enter = () => {
-  const queryCache = new QueryCache();
-  const isAuth = queryCache.find({queryKey: ['user']});
+  const [userId, setUserId] = React.useState(localStorage.getItem('id'));
 
-  console.log('isAuth = ', isAuth);
   return (
     <Stack
       useFlexGap
@@ -18,10 +15,10 @@ export const Enter = () => {
         alignItems: 'center'
       }}
     >
-      {isAuth ? (
-        <AuthUser />
+      {userId ? (
+        <AuthUser userId={userId} setUserId={setUserId} />
       ) : (
-        <NotAuthUser />
+        <NotAuthUser setUserId={setUserId} />
       )}
     </Stack>
   );

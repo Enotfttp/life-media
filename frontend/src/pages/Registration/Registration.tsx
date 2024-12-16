@@ -1,6 +1,6 @@
 import React from 'react';
 import {cloneDeep} from 'lodash';
-import {Typography, Stack, Button, Snackbar} from '@mui/material';
+import {Typography, Stack, Button, Alert} from '@mui/material';
 import {Form} from 'react-final-form';
 import {InputField} from 'src/UI';
 import {PasswordField} from 'src/UI/PasswordField/PasswordField';
@@ -17,11 +17,12 @@ export interface IInitial extends Omit<IUser, 'id' | 'chat_id' | 'order_id' | 'r
 }
 
 export const Registration = ({setIsOpenRegistrationModal}: IRegistrationProps) => {
-  const {mutateAsync, isSuccess, error} = useMutationRegistrationUser();
+  const [error, setError] = React.useState('');
+  const {mutateAsync} = useMutationRegistrationUser();
 
   const initialState: IInitial = React.useMemo(() => ({
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     patronymic: '',
     email: '',
     login: '',
@@ -31,17 +32,20 @@ export const Registration = ({setIsOpenRegistrationModal}: IRegistrationProps) =
 
   const onSubmit = async (values: IInitial) => {
     try {
+      setError('');
       const cloneValues = cloneDeep(values);
       delete cloneValues.repeatPassword;
 
       await mutateAsync(cloneValues);
-    } catch (e) {
+      setIsOpenRegistrationModal(false);
+    } catch (e: any) {
+      setError(e?.response?.data?.error || 'Произошла ошибка');
     }
   };
 
   return (
     <Form<IInitial> initialValues={initialState} onSubmit={onSubmit} validate={validate}>
-      {({values, hasValidationErrors, valid, submitError, ...props}) => (
+      {({values, hasValidationErrors, valid, ...props}) => (
         <form onSubmit={props.handleSubmit}>
           <Stack
             useFlexGap
@@ -51,30 +55,21 @@ export const Registration = ({setIsOpenRegistrationModal}: IRegistrationProps) =
               alignItems: 'center'
             }}
           >
-            {
-                            /**
-                             * TODO.FIX Не работает
-                             */}
-
-            {/* {submitError && ( */}
-            {/* <Snackbar */}
-            {/*  open */}
-            {/*  autoHideDuration={6000} */}
-            {/*  message={submitError} */}
-            {/*  action={( */}
-            {/*    <Button color="inherit" size="small"> */}
-            {/*      s */}
-            {/*      Undo */}
-            {/*        </Button> */}
-            {/*                    )} */}
-            {/*  sx={{bottom: {xs: 90, sm: 0}}} */}
-            {/* /> */}
-            {/* )} */}
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Регистрация
             </Typography>
-            <InputField name="firstName" label="Имя" />
-            <InputField name="lastName" label="Фамилия" />
+            {error && (
+            <Alert
+              severity="error"
+              sx={{
+                width: '100%'
+              }}
+            >
+              {error}
+            </Alert>
+            )}
+            <InputField name="firstname" label="Имя" />
+            <InputField name="lastname" label="Фамилия" />
             <InputField name="patronymic" label="Отчество" />
             <InputField name="email" label="Почта" type="email" />
             <InputField name="login" label="Логин" />
