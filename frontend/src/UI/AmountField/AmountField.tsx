@@ -1,15 +1,14 @@
 import React, {ChangeEvent} from 'react';
 import {Field, FieldProps} from 'react-final-form';
-import {TextField, FormControl} from '@mui/material';
+import {OutlinedInput, InputLabel, FormControl, InputAdornment, FormHelperText} from '@mui/material';
 
 interface Props extends FieldProps<string, any> {
   label: string,
   maxLength?: number,
-  multiline?: boolean,
   width?: string
 }
 
-export const InputField = ({label, maxLength = 255, multiline = false, width = '100%', ...props}: Props) => {
+export const AmountField = ({label, maxLength = 255, multiline = false, width = '100%', ...props}: Props) => {
   const [isTouch, setTouch] = React.useState(false);
 
   return (
@@ -27,15 +26,20 @@ export const InputField = ({label, maxLength = 255, multiline = false, width = '
 
         return (
           <FormControl sx={{m: 1, width}} variant="outlined">
-            <TextField
+            <InputLabel htmlFor="outlined-adornment-amount">{label}</InputLabel>
+            <OutlinedInput
               {...input}
+              type="number"
+              startAdornment={<InputAdornment position="start">Руб</InputAdornment>}
               label={label}
-              variant="outlined"
-              multiline={multiline}
-              onChange={handleChange}
               error={isTouch && meta.error}
-              helperText={isTouch && (meta.error || '')}
+              onChange={handleChange}
             />
+            {isTouch && meta.error && (
+            <FormHelperText sx={{color: '#d32f2f'}}>
+              {meta.error || ''}
+            </FormHelperText>
+            )}
           </FormControl>
         );
       }}

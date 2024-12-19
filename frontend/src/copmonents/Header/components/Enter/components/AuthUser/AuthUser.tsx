@@ -3,9 +3,11 @@ import {Badge, Avatar, IconButton, MenuItem, Menu} from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import {getCurrentUser} from 'src/rest-api/user/hooks';
+import {useNavigate} from 'react-router';
 
 export const AuthUser = ({userId, setUserId}: {userId: string, setUserId: (id: string | null) => void}) => {
   const {data} = getCurrentUser(userId);
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleMenuOpen = (event: any) => {
@@ -13,6 +15,11 @@ export const AuthUser = ({userId, setUserId}: {userId: string, setUserId: (id: s
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handlePersonalAccount = () => {
+    setAnchorEl(null);
+    navigate('personal-account', {replace: false});
   };
 
   const logout = () => {
@@ -44,7 +51,7 @@ export const AuthUser = ({userId, setUserId}: {userId: string, setUserId: (id: s
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          <MenuItem onClick={handleMenuClose}>Личный кабинет</MenuItem>
+          <MenuItem onClick={handlePersonalAccount}>Личный кабинет</MenuItem>
           <MenuItem onClick={logout}>Выйти</MenuItem>
         </Menu>
       </IconButton>

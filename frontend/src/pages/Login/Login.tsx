@@ -1,8 +1,7 @@
 import React from 'react';
 import {Typography, Stack, Button, Alert} from '@mui/material';
 import {Form} from 'react-final-form';
-import {InputField} from 'src/UI';
-import {PasswordField} from 'src/UI/PasswordField/PasswordField';
+import {InputField, PasswordField} from 'src/UI';
 import {useMutationLoginUser} from 'src/rest-api/user/hooks';
 import {validate} from './Login.utils';
 

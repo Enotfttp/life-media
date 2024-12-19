@@ -7,5 +7,6 @@ export const style = {
   alignItems: 'center',
   justifyContent: 'space-between',
   height: '150px',
-  color: '#fff'
+  color: '#fff',
+  marginTop: '30px'
 };

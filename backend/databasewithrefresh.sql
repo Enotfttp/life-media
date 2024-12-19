@@ -112,6 +112,6 @@ ADD CONSTRAINT fk_chat_statuses_users FOREIGN KEY (user_id) REFERENCES users(id)
 -- DROP TABLE order_statuses CASCADE;
 -- DROP TABLE orders CASCADE;
 -- DROP TABLE users CASCADE;
--- DROP TABLE security_user CASCADE;
+-- DROP TABLE photos CASCADE;
 -- DROP TABLE roles CASCADE;
 -- DROP TABLE products CASCADE;

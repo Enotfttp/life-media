@@ -8,12 +8,15 @@ class UserController {
     async createUser(req, res) {
         try {
             const {
-                id,
                 email, firstname,
                 patronymic, lastname, login, password
             } = req.body;
-            const {rows} = await db.query(`INSERT INTO users (id,email, firstname, patronymic, lastname, login, password) values($1,$2, $3, $4,$5, $6, $7) RETURNING *`, [id, email, firstname,
-                patronymic, lastname, login, password]);
+            const hashPassword = await bcrypt.hash(password, 10);
+            const uuid = uuidv4();
+
+
+            const {rows} = await db.query(`INSERT INTO users (id,email, firstname, patronymic, lastname, login, password) values($1,$2, $3, $4,$5, $6, $7) RETURNING *`, [uuid, email, firstname,
+                patronymic, lastname, login, hashPassword]);
 
             return res.json(rows[0])
         } catch (e) {
@@ -63,7 +66,6 @@ class UserController {
             const {rows} = await db.query(`DELETE FROM users WHERE id = $1`, [id]);
 
             res.json(rows[0]);
-
         } catch (e) {
             console.error('Ошибка во время удаления пользователя:', e);
             return res.status(400).json({error: e.message});
@@ -91,15 +93,14 @@ class UserController {
 
     async registrationUser(req, res) {
         try {
-            const {password, email} = req.body;
+            const {email} = req.body;
             const {rows} = await db.query(`SELECT * FROM users WHERE email = $1`, [email]);
 
             if (Boolean(rows.length)) {
                 throw new Error('Пользователь с таким email уже существует')
             }
-            const hashPassword = await bcrypt.hash(password, 10);
 
-            return await this.createUser({...req, body: {...req.body, password: hashPassword, id: uuidv4()}}, res);
+            return await this.createUser(req, res);
         } catch (e) {
             console.error('Ошибка во время регистрации:', e);
             return res.status(400).json({error: e.message});

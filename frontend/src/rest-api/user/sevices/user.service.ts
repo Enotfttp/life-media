@@ -16,12 +16,12 @@ class UserService {
         return axios.get<IUser>(this.URL + `/${id}`)
     }
 
-    updateUser() {
-        return axios.put<IUser>(this.URL + 'update')
+    updateUser(id: string) {
+        return axios.put<IUser>(this.URL + `update/${id}`)
     }
 
-    deleteUser(id: number) {
-        return axios.delete<IUser>(this.URL + `/${id}`)
+    deleteUser(id: string) {
+        return axios.delete<IUser>(this.URL + `/delete/${id}`)
     }
 
     loginUser(body: { login: string, password: string }) {

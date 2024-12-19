@@ -1,15 +1,15 @@
 import React, {Suspense} from 'react';
 import {Modal as ModalMui, Fade, Box, Backdrop, CircularProgress} from '@mui/material';
-import {OverridableComponent} from '@mui/material/OverridableComponent';
-import {ModalTypeMap} from '@mui/material/Modal/Modal';
+import {ModalProps} from '@mui/material/Modal/Modal';
 import {style} from './Modal.styled';
 
-interface IModal extends Omit<OverridableComponent<ModalTypeMap>, 'children'>, React.PropsWithChildren {
+interface IModal extends Omit<Partial<ModalProps>, 'children'>, React.PropsWithChildren {
   isOpen: boolean;
   handleOpen: (isShow: boolean) => void;
+  width?: string
 }
 
-export const Modal = ({isOpen, handleOpen, children, ...props}: IModal) => {
+export const Modal = ({isOpen, handleOpen, children, width = '450px', ...props}: IModal) => {
   return (
     <Suspense fallback={<CircularProgress />}>
       <ModalMui
@@ -27,7 +27,7 @@ export const Modal = ({isOpen, handleOpen, children, ...props}: IModal) => {
         }}
       >
         <Fade in={isOpen}>
-          <Box sx={style}>
+          <Box sx={style(width)}>
             {children}
           </Box>
         </Fade>

@@ -1,15 +1,22 @@
 import React, {ChangeEvent} from 'react';
 import {Field, FieldProps} from 'react-final-form';
-import {TextField, FormControl} from '@mui/material';
+import {TextField, FormControl, InputAdornment} from '@mui/material';
 
 interface Props extends FieldProps<string, any> {
   label: string,
   maxLength?: number,
-  multiline?: boolean,
+  systemCount: string,
   width?: string
 }
 
-export const InputField = ({label, maxLength = 255, multiline = false, width = '100%', ...props}: Props) => {
+export const NumberField = ({
+  label,
+  maxLength = 255,
+  multiline = false,
+  systemCount,
+  width = '100%',
+  ...props
+}: Props) => {
   const [isTouch, setTouch] = React.useState(false);
 
   return (
@@ -29,12 +36,16 @@ export const InputField = ({label, maxLength = 255, multiline = false, width = '
           <FormControl sx={{m: 1, width}} variant="outlined">
             <TextField
               {...input}
+              type="number"
               label={label}
-              variant="outlined"
-              multiline={multiline}
               onChange={handleChange}
               error={isTouch && meta.error}
               helperText={isTouch && (meta.error || '')}
+              slotProps={{
+                input: {
+                  startAdornment: <InputAdornment position="start">{systemCount}</InputAdornment>
+                }
+              }}
             />
           </FormControl>
         );

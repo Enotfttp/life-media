@@ -32,8 +32,7 @@ create TABLE products(
     id VARCHAR(255) PRIMARY KEY,
     name_product VARCHAR(255),
     cost INTEGER,
-    count INTEGER,
-    description_id VARCHAR(255)
+    count INTEGER
 );
 
 create TABLE descriptions(
@@ -44,7 +43,14 @@ create TABLE descriptions(
     height INTEGER,
     color VARCHAR(255),
     material VARCHAR(255),
-    photo VARCHAR(255)
+    product_id VARCHAR(255)
+);
+
+-- Несколько фоток у одного описания
+create TABLE photos(
+    id VARCHAR(255) PRIMARY KEY,
+    photo_link VARCHAR(255),
+    product_id VARCHAR(255)
 );
 
 create TABLE chats(
@@ -81,8 +87,11 @@ ALTER TABLE orders
 ADD CONSTRAINT fk_orders_statuses FOREIGN KEY (order_statuses_id) REFERENCES order_statuses(id) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT fk_orders_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE products
-ADD CONSTRAINT fk_products_description FOREIGN KEY (description_id) REFERENCES descriptions(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE descriptions
+ADD CONSTRAINT fk_descriptions_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE photos
+ADD CONSTRAINT fk_photos_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE chats
 ADD CONSTRAINT fk_chats_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -90,7 +99,6 @@ ADD CONSTRAINT fk_chats_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELE
 ALTER TABLE chat_message
 ADD CONSTRAINT fk_chat_message_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT fk_chat_message_chat FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE ON UPDATE CASCADE;
-
 
 ALTER TABLE chat_statuses
 ADD CONSTRAINT fk_chat_statuses_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
