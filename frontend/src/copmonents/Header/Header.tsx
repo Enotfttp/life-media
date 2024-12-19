@@ -1,12 +1,13 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import {Container, TextField} from '@mui/material';
-import {useNavigate} from 'react-router';
+import {useNavigate, useLocation} from 'react-router';
 import {Enter} from './components';
 import {style} from './Header.styled';
 
 export const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const debounce = (fn: (...args: React.ChangeEventHandler<HTMLInputElement>[]) => void, ms = 300) => {
     let timeoutId: ReturnType<typeof setTimeout>;
@@ -15,9 +16,9 @@ export const Header = () => {
       timeoutId = setTimeout(() => fn.apply(this, args), ms);
     };
   };
-
+    // TODO.FIX поиск
   const searchElements = (event: React.ChangeEventHandler<HTMLInputElement>) => {
-    console.log('test = ', event.target?.value);
+    // console.log('test = ', event.target?.value);
   };
 
   return (
@@ -38,17 +39,20 @@ export const Header = () => {
       >
         Лайф Медиа
       </Typography>
-      <TextField
-        id="filled-textarea"
-        label="Поиск по название товара"
-        placeholder="Введние значение для поиска"
-        multiline
-        variant="standard"
-        sx={{
-          width: '50%'
-        }}
-        onChange={debounce(searchElements)}
-      />
+      {location.pathname === '/' && (
+        <TextField
+          id="filled-textarea"
+          label="Поиск по название товара"
+          placeholder="Введние значение для поиска"
+          multiline
+          variant="standard"
+          sx={{
+            width: '50%'
+          }}
+          onChange={debounce(searchElements)}
+        />
+      )}
+
       <Enter />
     </Container>
   );

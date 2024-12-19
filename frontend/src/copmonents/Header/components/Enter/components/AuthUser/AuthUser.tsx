@@ -19,7 +19,7 @@ export const AuthUser = ({userId, setUserId}: {userId: string, setUserId: (id: s
 
   const handlePersonalAccount = () => {
     setAnchorEl(null);
-    navigate('personal-account', {replace: false});
+    navigate(`personal-account/${data?.id}`, {replace: false});
   };
 
   const logout = () => {

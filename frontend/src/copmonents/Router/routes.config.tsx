@@ -8,7 +8,7 @@ export const routesConfig: RouteObject[] = [
     element: <Main />
   },
   {
-    path: '/personal-account',
+    path: '/personal-account/:id',
     element: <PersonalAccount />
   },
   {

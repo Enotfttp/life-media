@@ -4,6 +4,7 @@ create TABLE users(
     firstName VARCHAR(255),
     patronymic VARCHAR(255),
     lastName VARCHAR(255),
+    phone VARCHAR(255),
     login VARCHAR(255),
     password VARCHAR(255),
     photo VARCHAR(255),
