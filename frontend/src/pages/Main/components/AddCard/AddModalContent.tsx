@@ -105,6 +105,7 @@ export const AddModalContent = ({handleOpen}: IProps) => {
               width="46.5%"
               name="cost"
               label="Цена"
+              systemCount="Руб"
             />
             <InputField
               width="46.5%"
@@ -139,6 +140,7 @@ export const AddModalContent = ({handleOpen}: IProps) => {
               width="21%"
               name="count"
               label="Количество"
+              systemCount="Шт"
             />
             <InputField
               multiline

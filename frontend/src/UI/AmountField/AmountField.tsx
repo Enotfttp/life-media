@@ -5,10 +5,18 @@ import {OutlinedInput, InputLabel, FormControl, InputAdornment, FormHelperText} 
 interface Props extends FieldProps<string, any> {
   label: string,
   maxLength?: number,
+  systemCount: string,
   width?: string
 }
 
-export const AmountField = ({label, maxLength = 255, multiline = false, width = '100%', ...props}: Props) => {
+export const AmountField = ({
+  label,
+  maxLength = 255,
+  multiline = false,
+  width = '100%',
+  systemCount,
+  ...props
+}: Props) => {
   const [isTouch, setTouch] = React.useState(false);
 
   return (
@@ -35,7 +43,7 @@ export const AmountField = ({label, maxLength = 255, multiline = false, width = 
             <OutlinedInput
               {...input}
               type="number"
-              startAdornment={<InputAdornment position="start">Руб</InputAdornment>}
+              startAdornment={<InputAdornment position="start">{systemCount}</InputAdornment>}
               label={label}
               error={isTouch && meta.error}
               onChange={handleChange}
