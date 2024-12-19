@@ -3,17 +3,12 @@ import {Typography, Stack, Button, Alert} from '@mui/material';
 import {Form} from 'react-final-form';
 import {InputField, PasswordField} from 'src/UI';
 import {useMutationLoginUser} from 'src/rest-api/user/hooks';
-import {validate} from './Login.utils';
+import {validate, IInitial} from './Login.utils';
 
 interface ILoginProps {
   handleOpen: (isShow: boolean) => void;
   setUserId: (id: string) => void;
   setIsOpenRegistrationModal: (isShow: boolean) => void;
-}
-
-export interface IInitial {
-  login: string,
-  password: string
 }
 
 export const Login = ({setIsOpenRegistrationModal, handleOpen, setUserId}: ILoginProps) => {

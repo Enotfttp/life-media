@@ -1,5 +1,9 @@
 import {required} from 'src/helpers/validate';
-import {IInitial} from './Login';
+
+export interface IInitial {
+  login: string,
+  password: string
+}
 
 export const validate = (values: IInitial) => {
   const errors: Partial<IInitial> = {};

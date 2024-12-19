@@ -1,40 +1,47 @@
 import React from 'react';
 import {Typography, Stack, Button, Alert} from '@mui/material';
 import {Form} from 'react-final-form';
-import {InputField, AmountField, NumberField, FileUpload} from 'src/UI';
-import {IProduct} from 'src/rest-api/product/models';
+import {InputField, AmountField, NumberField, FileUploadField} from 'src/UI';
 import {useMutationCreateProducts} from 'src/rest-api/product/hooks';
-import {validate} from './AddModalContent.utils';
+import {fileToBase64} from 'src/helpers/utils';
+import {validate, IInitial} from './AddModalContent.utils';
 
 interface IProps {
   handleOpen: (isShow: boolean) => void;
 }
 
-export type TInitial = Omit<IProduct, 'id'>;
-
 export const AddModalContent = ({handleOpen}: IProps) => {
   const [error, setError] = React.useState('');
   const {mutateAsync} = useMutationCreateProducts();
 
-  const initialState: TInitial = React.useMemo(() => ({
+  const initialState: IInitial = React.useMemo(() => ({
     name_product: '',
-    cost: 0,
-    count: 0,
+    cost: '',
+    count: '',
     description: '',
-    weight: 0,
-    width: 0,
-    height: 0,
+    weight: '',
+    width: '',
+    height: '',
     color: '',
     material: '',
-    photo_link: ''
+    // Заглушка для валидации,
+    photoName: '',
+    photo_link: undefined
   }), []);
 
-  const onSubmit = async (values: TInitial) => {
+  const onSubmit = async (values: IInitial) => {
     try {
       setError('');
-      console.log('values = ', values);
-      const {data} = await mutateAsync(values);
-      console.log('data = ', data);
+      const resultValues = {
+        ...values,
+        cost: Number(values.cost),
+        count: Number(values.count),
+        weight: Number(values.weight),
+        width: Number(values.width),
+        height: Number(values.height)
+      };
+      delete resultValues?.photoName;
+      await mutateAsync(resultValues);
       handleOpen(false);
     } catch (e: any) {
       setError(e?.response?.data?.error || 'Произошла ошибка');
@@ -42,12 +49,12 @@ export const AddModalContent = ({handleOpen}: IProps) => {
   };
 
   return (
-    <Form<TInitial>
+    <Form<IInitial>
       initialValues={initialState}
       onSubmit={onSubmit}
       validate={validate}
     >
-      {(props) => (
+      {({form, valid, ...props}) => (
         <form onSubmit={props.handleSubmit}>
           <Typography
             id="transition-modal-title"
@@ -78,8 +85,17 @@ export const AddModalContent = ({handleOpen}: IProps) => {
               flexWrap: 'wrap'
             }}
           >
-
-            <FileUpload />
+            <FileUploadField
+              label="Загрузите файл"
+              name="photoName"
+              onChange={(event) => {
+                const base64Array: string[] = [];
+                Promise.all(Array.from(event.target?.files as any).map((file) => fileToBase64(file))).then((base64Strings) => {
+                  base64Array.push(...base64Strings);
+                });
+                form.change('photo_link', base64Array);
+              }}
+            />
             <InputField
               width="46.5%"
               name="name_product"
@@ -133,6 +149,7 @@ export const AddModalContent = ({handleOpen}: IProps) => {
             <Button
               type="submit"
               variant="contained"
+              disabled={!valid}
               sx={{marginLeft: 'auto'}}
             >
               Добавить

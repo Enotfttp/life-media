@@ -20,10 +20,8 @@ export const ViewCard: React.FC<IProps> = ({product}) => {
       <CardActionArea>
         <CardMedia
           component="img"
-          height="140"
-                    // src={`data:image/jpeg;base64,${imgBase64}`}
-                    // image="/static/images/cards/contemplative-reptile.jpg"
-          alt="green iguana"
+          height="200"
+          src={`data:image/jpeg;base64,${product.photo_link}`}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

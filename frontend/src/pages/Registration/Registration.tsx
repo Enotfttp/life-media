@@ -4,15 +4,10 @@ import {Typography, Stack, Button, Alert} from '@mui/material';
 import {Form} from 'react-final-form';
 import {InputField, PasswordField} from 'src/UI';
 import {useMutationRegistrationUser} from 'src/rest-api/user/hooks';
-import {IUser} from 'src/rest-api/user/models';
-import {validate} from './Registration.utils';
+import {validate, IInitial} from './Registration.utils';
 
 interface IRegistrationProps {
   setIsOpenRegistrationModal: (isShow: boolean) => void;
-}
-
-export interface IInitial extends Omit<IUser, 'id' | 'chat_id' | 'order_id' | 'role_id'> {
-  repeatPassword?: string
 }
 
 export const Registration = ({setIsOpenRegistrationModal}: IRegistrationProps) => {

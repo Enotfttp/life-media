@@ -26,7 +26,12 @@ export const AmountField = ({label, maxLength = 255, multiline = false, width = 
 
         return (
           <FormControl sx={{m: 1, width}} variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-amount">{label}</InputLabel>
+            <InputLabel
+              htmlFor="outlined-adornment-amount"
+              error={isTouch && meta.error}
+            >
+              {label}
+            </InputLabel>
             <OutlinedInput
               {...input}
               type="number"

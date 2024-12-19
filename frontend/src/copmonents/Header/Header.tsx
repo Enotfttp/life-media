@@ -17,7 +17,7 @@ export const Header = () => {
   };
 
   const searchElements = (event: React.ChangeEventHandler<HTMLInputElement>) => {
-    console.log('test = ', event.target.value);
+    console.log('test = ', event.target?.value);
   };
 
   return (

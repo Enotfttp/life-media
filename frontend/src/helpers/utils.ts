@@ -1,3 +1,8 @@
-export const convertToBase64 = (imageData: any) => {
-  return btoa(new Uint8Array(imageData).reduce((data, byte) => data + String.fromCharCode(byte), ''));
-};
+export function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader?.result?.split(',')[1]); // Получаем только base64 без начальной части
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
