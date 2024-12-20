@@ -30,6 +30,7 @@ export const Registration = ({setIsOpenRegistrationModal}: IRegistrationProps) =
       const cloneValues = cloneDeep(values);
       delete cloneValues.repeatPassword;
 
+      // @ts-ignore
       await mutateAsync(cloneValues);
       setIsOpenRegistrationModal(false);
     } catch (e: any) {

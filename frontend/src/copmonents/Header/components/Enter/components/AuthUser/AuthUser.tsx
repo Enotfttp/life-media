@@ -43,7 +43,7 @@ export const AuthUser = ({userId, setUserId}: {userId: string, setUserId: (id: s
       <IconButton>
         <Avatar
           alt={data?.lastname || '-'}
-          src="/static/images/avatar/1.jpg"
+          src={`data:image/jpeg;base64,${data?.photo_link}`}
           onClick={handleMenuOpen}
         />
         <Menu

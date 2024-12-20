@@ -6,6 +6,7 @@ export interface IUser {
     lastname: string,
     login: string,
     password: string,
+    photo_link: string,
     phone: string,
     chat_id: number,
     order_id: number,
@@ -17,6 +18,8 @@ export interface IUserForm {
     firstname: string,
     patronymic: string,
     lastname: string,
-    phone: string,
+    phone?: string,
+    photo?: string,
+    photo_link?: string
 }
 

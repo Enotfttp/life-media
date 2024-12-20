@@ -29,6 +29,7 @@ export const Login = ({setIsOpenRegistrationModal, handleOpen, setUserId}: ILogi
       handleOpen(false);
     } catch (e: any) {
       setError(e?.response?.data?.error || 'Произошла ошибка');
+      throw new Error(e);
     }
   };
 

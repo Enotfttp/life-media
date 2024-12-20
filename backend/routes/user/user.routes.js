@@ -7,7 +7,7 @@ const userInstance = new userController();
 router.post('/user/create', userInstance.createUser)
 router.get('/user/list', userInstance.getUsers)
 router.get('/user/:id', userInstance.getUser)
-router.put('/user/update', userInstance.updateUser)
+router.put('/user/update/:id', userInstance.updateUser)
 router.delete('/user/delete/:id', userInstance.deleteUser)
 router.post('/user/login', userInstance.loginUser)
 // Данная запись нужна, чтобы не терять контекст при вызове

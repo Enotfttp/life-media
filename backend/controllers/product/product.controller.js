@@ -17,11 +17,11 @@ class ProductController {
 
             const buffer = Buffer.from(photo_link[0], 'base64');
             // Сохранение изображения на диск
-            const imagePath = join(process.cwd(), 'public', Date.now() + '.png');
+            const imagePath = join(process.cwd(), 'public/products', Date.now() + '.png');
             await fs.writeFile(imagePath, buffer);
 
             // Сохранение пути к изображению в базу данных
-            const imageUrl = `/public/${path.basename(imagePath)}`;
+            const imageUrl = `/public/products/${path.basename(imagePath)}`;
 
             const {rows: rowsProduct} = await db.query(`INSERT INTO products (id, name_product, cost, count) values($1,$2, $3, $4) RETURNING *`, [uuidProduct, name_product, cost, count]);
             const {rows: rowsDescription} = await db.query(`INSERT INTO descriptions (id, description, weight, width, height, color, material, product_id ) values ($1,$2, $3, $4, $5, $6, $7, $8) RETURNING *`, [uuidDescription, description, weight, width, height, color, material, uuidProduct])

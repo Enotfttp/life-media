@@ -1,7 +1,7 @@
 import {emailRegexp, required} from 'src/helpers/validate';
 import {IUser} from 'src/rest-api/user/models';
 
-export interface IInitial extends Omit<IUser, 'id' | 'chat_id' | 'order_id' | 'role_id'> {
+export interface IInitial extends Omit<IUser, 'id' | 'chat_id' | 'order_id' | 'role_id' | 'phone' | 'photo'> {
   repeatPassword?: string
 }
 

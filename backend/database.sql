@@ -7,7 +7,7 @@ create TABLE users(
     phone VARCHAR(255),
     login VARCHAR(255),
     password VARCHAR(255),
-    photo VARCHAR(255),
+    photo_link VARCHAR(255),
     chat_id VARCHAR(255),
     order_id VARCHAR(255),
     role_id VARCHAR(255)

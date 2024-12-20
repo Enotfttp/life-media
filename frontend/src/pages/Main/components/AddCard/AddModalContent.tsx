@@ -1,7 +1,7 @@
 import React from 'react';
 import {Typography, Stack, Button, Alert} from '@mui/material';
 import {Form} from 'react-final-form';
-import {InputField, AmountField, NumberField, FileUploadField} from 'src/UI';
+import {InputField, NumberField, FileUploadField} from 'src/UI';
 import {useMutationCreateProducts} from 'src/rest-api/product/hooks';
 import {fileToBase64} from 'src/helpers/utils';
 import {validate, IInitial} from './AddModalContent.utils';
@@ -91,6 +91,7 @@ export const AddModalContent = ({handleOpen}: IProps) => {
               onChange={(event) => {
                 const base64Array: string[] = [];
                 Promise.all(Array.from(event.target?.files as any).map((file) => fileToBase64(file))).then((base64Strings) => {
+                  // @ts-ignore
                   base64Array.push(...base64Strings);
                 });
                 form.change('photo_link', base64Array);
@@ -101,7 +102,7 @@ export const AddModalContent = ({handleOpen}: IProps) => {
               name="name_product"
               label="Название продукта"
             />
-            <AmountField
+            <NumberField
               width="46.5%"
               name="cost"
               label="Цена"
@@ -136,7 +137,7 @@ export const AddModalContent = ({handleOpen}: IProps) => {
               label="Длина"
               systemCount="см"
             />
-            <AmountField
+            <NumberField
               width="21%"
               name="count"
               label="Количество"

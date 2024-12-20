@@ -10,6 +10,9 @@ export default defineConfig(({command, mode}) => {
         define: {
             'process.env': env
         },
+        optimizeDeps: {
+            exclude: ['mui-material-styles'] // Replace 'mui-material-styles' with the specific package causing issues
+        },
         plugins: [react()],
         server: {
             port: 3000,

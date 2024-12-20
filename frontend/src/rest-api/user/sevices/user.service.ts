@@ -1,5 +1,5 @@
 import axios from "axios";
-import {IUser} from '../models'
+import {IUser, IUserForm} from '../models'
 
 class UserService {
     private URL = process.env.BASE_API_URL + '/user'
@@ -16,8 +16,8 @@ class UserService {
         return axios.get<IUser>(this.URL + `/${id}`)
     }
 
-    updateUser(id: string) {
-        return axios.put<IUser>(this.URL + `update/${id}`)
+    updateUser(body: IUserForm, id: string) {
+        return axios.put<IUser>(this.URL + `/update/${id}`, body)
     }
 
     deleteUser(id: string) {

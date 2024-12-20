@@ -60,7 +60,6 @@ export const FileUploadField = ({width = '100%', label, ...props}: IProps) => {
                   type="file"
                   onChange={handleChange}
                   onClick={() => {
-                    console.log('testqweqweqwe');
                     setTouch(true);
                   }}
                   helperText={isTouch && (meta.error || '')}

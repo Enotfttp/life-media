@@ -1,61 +1,100 @@
 import React from 'react';
-import {Stack, Typography, Box} from '@mui/material';
+import {useParams} from 'react-router-dom';
+import {cloneDeep} from 'lodash';
+import {Stack, Typography, Box, Button, Alert} from '@mui/material';
 import {Form} from 'react-final-form';
 import {IUserForm, IUser} from 'src/rest-api/user/models';
+import {AvatarField, InputEditField} from 'src/UI';
+import {useMutationUpdatenUser} from 'src/rest-api/user/hooks';
 
 export const Info = ({data}: {data?: IUser}) => {
-  console.log('data = ', data);
+  const {id} = useParams();
+  const {mutateAsync} = useMutationUpdatenUser();
+  const [error, setError] = React.useState('');
+
   const initialState: IUserForm = React.useMemo(() => ({
     email: data?.email ?? '-',
     firstname: data?.firstname ?? '-',
-    patronymic: data?.firstname ?? '-',
+    patronymic: data?.patronymic ?? '-',
     lastname: data?.lastname ?? '-',
-    phone: data?.phone ?? '-'
+    phone: data?.phone,
+    photo: '',
+    photo_link: data?.photo_link
   }), [data]);
 
-  const handleSubmit = () => {
-
+  const handleSubmit = async (values: IUserForm) => {
+    try {
+      console.log('values = ', values);
+      setError('');
+      const cloneValues = cloneDeep(values);
+      delete cloneValues.photo;
+      if (id) await mutateAsync({body: cloneValues, id});
+    } catch (e: any) {
+      setError(e?.response?.data?.error || 'Произошла ошибка');
+    }
   };
-    // TODO.FIX переписать через форму
+
   return (
     <Form<IUserForm>
       initialValues={initialState}
       onSubmit={handleSubmit}
     >
-      {(props) => (
+      {({form, dirtyFields, values, ...props}) => (
         <form onSubmit={props.handleSubmit}>
-          <Stack direction="column" spacing={2}>
-            <Typography id="transition-modal-title" variant="h4">
-              Персональная информация
-            </Typography>
-            <Stack direction="row" justifyContent="space-between" spacing={2}>
-              <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
-                <Typography variant="h6">Фамилия:</Typography>
-                <Box component="span" sx={{fontWeight: 'normal'}}>
-                  {data?.lastname ?? '-'}
-                </Box>
+          {error && (
+            <Alert
+              severity="error"
+              sx={{
+                width: '100%'
+              }}
+            >
+              {error}
+            </Alert>
+          )}
+          <Stack direction="row" justifyContent="space-between" sx={{marginBottom: '100px', width: '90%'}}>
 
-                <Typography variant="h6">Имя:</Typography>
-                <Box component="span" sx={{fontWeight: 'normal'}}>
-                  {data?.firstname ?? '-'}
-                </Box>
+            <AvatarField
+              name="photo"
+              onChange={(val) => form.change('photo_link', val)}
+              base64={values.photo_link}
+            />
 
-                <Typography variant="h6">Отчество:</Typography>
-                <Box component="span" sx={{fontWeight: 'normal'}}>
-                  {data?.patronymic ?? '-'}
+            <Stack direction="column" spacing={2}>
+              <Typography id="transition-modal-title" variant="h4">
+                Персональная информация
+              </Typography>
+              <Stack direction="row" justifyContent="space-between" spacing={2}>
+                <Box sx={{display: 'flex', flexDirection: 'column', gap: 1, fontSize: '18px'}}>
+                  <Typography variant="h6">Фамилия:</Typography>
+                  <InputEditField name="lastname" />
+
+                  <Typography variant="h6">Имя:</Typography>
+                  <InputEditField name="firstname" />
+
+                  <Typography variant="h6">Отчество:</Typography>
+                  <InputEditField name="patronymic" />
+
                 </Box>
-              </Box>
-              <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
-                <Typography variant="h6">Номер телефона:</Typography>
-                <Box component="span" sx={{fontWeight: 'normal'}}>
-                  {data?.phone ?? '-'}
+                <Box sx={{display: 'flex', flexDirection: 'column', gap: 1, fontSize: '18px'}}>
+                  <Typography variant="h6">Номер телефона:</Typography>
+                  <InputEditField name="phone" typeField="phone" />
+
+                  <Typography variant="h6">Почта</Typography>
+                  <InputEditField name="email" />
                 </Box>
-                <Typography variant="h6">Почта</Typography>
-                <Box component="span" sx={{fontWeight: 'normal'}}>
-                  {data?.email ?? '-'}
-                </Box>
-              </Box>
+              </Stack>
             </Stack>
+          </Stack>
+          <Stack direction="row" justifyContent="end" sx={{width: '90%'}}>
+            {Boolean(Object.keys(dirtyFields).length)
+                            && (
+                            <Button
+                              type="submit"
+                              variant="contained"
+                            >
+                              Сохранить
+                            </Button>
+                            )}
           </Stack>
         </form>
       )}

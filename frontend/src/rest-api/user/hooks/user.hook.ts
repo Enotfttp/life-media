@@ -1,5 +1,5 @@
-import {IUser} from "src/rest-api/user/models";
-import {useQuery, useMutation} from "@tanstack/react-query";
+import {IUser, IUserForm} from "src/rest-api/user/models";
+import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
 import {userService} from '../sevices'
 
 // export function useRegistrationUser(body: Omit<IUser, 'chat_id' & 'order_id' & 'role_id'>) {
@@ -28,10 +28,18 @@ export function useMutationLoginUser() {
 export function useMutationRegistrationUser() {
     return useMutation({
             mutationFn: async (body: Omit<IUser, 'id' | 'chat_id' | 'order_id' | 'role_id'>) => await userService.registrationUser(body),
-            // onError: (error) => {
-            //     console.error('Ошибка мутации:', error);
-            //     return error.response?.data?.error || "Произошла ошибка";
-            // },
+        },
+    )
+}
+
+export function useMutationUpdatenUser() {
+    const queryClient = useQueryClient();
+    
+    return useMutation({
+            mutationFn: async ({body, id}: { body: IUserForm, id: string }) => await userService.updateUser(body, id),
+            onSuccess: () => {
+                queryClient.invalidateQueries({queryKey: ['user']});
+            },
         },
     )
 }
