@@ -1,7 +1,7 @@
 import {required} from 'src/helpers/validate';
 import {IProductForm} from 'src/rest-api/product/models';
 
-export interface IInitial extends Omit<IProductForm, 'id'> {
+export interface IInitial extends IProductForm {
   photoName?: string
 }
 

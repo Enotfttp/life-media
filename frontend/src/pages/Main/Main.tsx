@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Stack} from '@mui/material';
 import {useGetProducts} from 'src/rest-api/product/hooks';
-import {ViewCard, AddCard} from './components';
+import {ViewShortCard, AddCard} from './components';
 
 export const Main = () => {
   const {data} = useGetProducts();
@@ -27,7 +27,7 @@ export const Main = () => {
       >
         {/* TODO.FIX Добавить разделение на роли */}
         <AddCard />
-        {Boolean(data?.length) && data!.map(((product) => <ViewCard key={product.id} product={product} />))}
+        {Boolean(data?.length) && data!.map(((product) => <ViewShortCard key={product.id} product={product} />))}
       </Stack>
     </Container>
   );

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {IProduct} from "../models";
+import {IProduct, IProductForm} from "../models";
 
 class ProductService {
     private URL = process.env.BASE_API_URL + '/product'
@@ -16,8 +16,8 @@ class ProductService {
         return axios.get<IProduct>(this.URL + `/${id}`)
     }
 
-    updateProduct(body: IProduct) {
-        return axios.put<IProduct>(this.URL + `update/${body.id}`, body)
+    updateProduct({body, id}: { body: IProductForm, id: string }) {
+        return axios.put<IProduct>(this.URL + `/update/${id}`, body)
     }
 
     deleteProduct(id: string) {

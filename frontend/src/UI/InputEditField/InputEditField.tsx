@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from 'react';
 import {Field, FieldProps} from 'react-final-form';
-import {TextField, FormControl, Button, Stack, Box, InputLabel, Input} from '@mui/material';
+import {TextField, FormControl, Button, Stack, Box, Input} from '@mui/material';
 import {IMaskInput} from 'react-imask';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -78,6 +78,7 @@ export const InputEditField = ({
                 </Box>
               ) : (typeField === 'phone' ? (
                 <Input
+                  placeholder="+7 (000) 000-0000"
                   {...input}
                   sx={{
                       padding: '0px',

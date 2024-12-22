@@ -18,13 +18,13 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 interface IProps extends FieldProps<string, any> {
-  base64?: string,
+  base64?: string | null,
   maxLength?: number,
   multiline?: boolean,
   onChange: (value: string) => void
 }
 
-export const AvatarField = ({label, base64, ...props}: IProps) => {
+export const ImageField = ({label, base64, ...props}: IProps) => {
   const [selectedFile, setSelectedFile] = React.useState<any>(null);
 
   return (
@@ -45,16 +45,16 @@ export const AvatarField = ({label, base64, ...props}: IProps) => {
           return (
             <>
               <FormControl
-                sx={{position: 'relative', width: '350px', height: '400px'}}
+                sx={{position: 'relative', width: '100%', height: '400px'}}
                 variant="outlined"
               >
                 <Avatar
+                  variant="rounded"
                   src={selectedFile ? URL.createObjectURL(selectedFile) : `data:image/jpeg;base64,${base64}`}
                   sx={{
                     position: 'absolute',
-                    width: 300,
-                    height: 300,
-                    borderRadius: '50%',
+                    width: '100%',
+                    height: '400px',
                     cursor: 'pointer',
                     transition: '.5s all',
                     zIndex: 999
@@ -87,6 +87,7 @@ export const AvatarField = ({label, base64, ...props}: IProps) => {
                     onChange={handleChange}
                     multiple
                   />
+
                 </Button>
               </FormControl>
             </>

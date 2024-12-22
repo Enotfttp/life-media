@@ -13,16 +13,16 @@ export interface IProduct {
 }
 
 export interface IProductForm {
-    id: string,
-    name_product: string,
-    cost: string,
-    count: string,
-    description: string,
-    weight: string,
-    width: string,
-    height: string,
-    color: string,
-    material: string,
-    photo_link?: string[] | null
+    name_product?: string,
+    cost?: number,
+    count?: number,
+    description?: string,
+    weight?: number,
+    width?: number,
+    height?: string,
+    color?: string,
+    material?: string,
+    photo_link?: string | null,
+    photo?: string
 }
 

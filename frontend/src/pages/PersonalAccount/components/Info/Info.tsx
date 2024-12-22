@@ -24,7 +24,6 @@ export const Info = ({data}: {data?: IUser}) => {
 
   const handleSubmit = async (values: IUserForm) => {
     try {
-      console.log('values = ', values);
       setError('');
       const cloneValues = cloneDeep(values);
       delete cloneValues.photo;

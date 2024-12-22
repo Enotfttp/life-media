@@ -1,2 +1,2 @@
-export * from './ViewCard/ViewCard';
+export * from './ViewCard/ViewShortCard';
 export * from './AddCard/AddCard';
