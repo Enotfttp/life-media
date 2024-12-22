@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export const ViewShortCard: React.FC<IProps> = ({product}) => {
-  const [isOpen, handleOpen] = React.useState(true);
+  const [isOpen, handleOpen] = React.useState(false);
 
   return (
     <>

@@ -13,7 +13,7 @@ interface IProps {
 
 export const ViewCard: React.FC<IProps> = ({id, handleOpen}) => {
   const {data} = useGetProduct(id);
-  const {mutateAsync, isSuccess} = useMutationUpdateProduct();
+  const {mutateAsync} = useMutationUpdateProduct();
   const [error, setError] = React.useState('');
 
   const initialState: IProductForm = React.useMemo(() => ({
