@@ -67,15 +67,14 @@ create TABLE chat_message(
     file VARCHAR(300),
 --     Пользователь, который добавил сообщение
     user_id VARCHAR(255),
-    chat_id VARCHAR(255)
+    chat_id VARCHAR(255),
+    chat_status_id VARCHAR(255)
 );
 
 
 create TABLE chat_statuses(
     id VARCHAR(255) PRIMARY KEY,
-    is_read boolean,
---     Пользователь с которым происходит общение
-    user_id VARCHAR(255)
+    is_read boolean
 );
 
 
@@ -98,11 +97,9 @@ ALTER TABLE chats
 ADD CONSTRAINT fk_chats_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE chat_message
-ADD CONSTRAINT fk_chat_message_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT fk_chat_message_chat_status_id FOREIGN KEY (chat_status_id) REFERENCES chat_statuses(id) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT fk_chat_message_chat FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE chat_statuses
-ADD CONSTRAINT fk_chat_statuses_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 

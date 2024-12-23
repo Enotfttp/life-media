@@ -78,6 +78,7 @@ class ProductController {
                                             descriptions d ON p.id = d.product_id
                                         LEFT JOIN 
                                             photos ph ON p.id = ph.product_id`)
+
             const newRows = await Promise.all(rows.map(async (elem) => {
                 const fileBuffer = await fs.readFile((process.cwd() + elem.photo_link));
                 const base64String = fileBuffer.toString('base64');

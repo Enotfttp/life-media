@@ -92,7 +92,8 @@ export const InputEditField = ({
                   {...input}
                   sx={{
                       padding: '0px',
-                      margin: '0px'
+                      margin: '0px',
+                      width: '100%'
                     }}
                   label={props?.label}
                   variant="standard"

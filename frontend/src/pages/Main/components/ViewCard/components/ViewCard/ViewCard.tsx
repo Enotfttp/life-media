@@ -107,7 +107,7 @@ export const ViewCard: React.FC<IProps> = ({id, handleOpen}) => {
             </Stack>
 
             <Typography variant="h6">Описание:</Typography>
-            <InputEditField name="description" typeField="phone" />
+            <InputEditField name="description" />
           </Stack>
           <Stack direction="row" justifyContent="end" sx={{width: '100%', marginTop: '40px'}}>
             {Boolean(Object.keys(dirtyFields).length)
