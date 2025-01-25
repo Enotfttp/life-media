@@ -2,6 +2,7 @@ const db = require('../../db');
 const {v4: uuidv4} = require("uuid");
 const {join} = require("node:path");
 const path = require("node:path");
+const bcrypt = require("bcrypt");
 const fs = require('fs').promises;
 
 class ProductController {
@@ -36,8 +37,8 @@ class ProductController {
 
     async getProducts(req, res) {
         try {
-            const {search} = req.body
-
+            const {search} = req.body;
+            let resultRows;
             if (search) {
                 const {rows} = await db.query(`SELECT 
                                             p.id,
@@ -57,9 +58,9 @@ class ProductController {
                                             descriptions d ON p.id = d.product_id
                                         LEFT JOIN 
                                             photos ph ON p.id = ph.product_id
-                                        WHERE LOWER(p.name_product) LIKE $1`, [search])
-                return res.json(rows);
-            }
+                                        WHERE LOWER(p.name_product) LIKE LOWER($1)`, ['%' + search + '%'])
+                resultRows = rows;
+            }else{
             const {rows} = await db.query(`SELECT 
                                             p.id,
                                             p.name_product,
@@ -79,7 +80,10 @@ class ProductController {
                                         LEFT JOIN 
                                             photos ph ON p.id = ph.product_id`)
 
-            const newRows = await Promise.all(rows.map(async (elem) => {
+                resultRows = rows;
+            }
+
+            const newRows = await Promise.all(resultRows.map(async (elem) => {
                 const fileBuffer = await fs.readFile((process.cwd() + elem.photo_link));
                 const base64String = fileBuffer.toString('base64');
                 return ({...elem, photo_link: base64String})

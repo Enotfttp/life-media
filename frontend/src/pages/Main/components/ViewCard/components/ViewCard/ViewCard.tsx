@@ -5,6 +5,7 @@ import {IProductForm} from 'src/rest-api/product/models';
 import {InputEditField, ImageField} from 'src/UI';
 import {Form} from 'react-final-form';
 import {useGetProduct, useMutationUpdateProduct} from 'src/rest-api/product/hooks';
+import {OrderBtn} from './components/OrderBtn';
 
 interface IProps {
   id: string,
@@ -12,7 +13,7 @@ interface IProps {
 }
 
 export const ViewCard: React.FC<IProps> = ({id, handleOpen}) => {
-  const {data} = useGetProduct(id);
+  const {data, refetch, isSuccess} = useGetProduct(id);
   const {mutateAsync} = useMutationUpdateProduct();
   const [error, setError] = React.useState('');
 
@@ -43,7 +44,6 @@ export const ViewCard: React.FC<IProps> = ({id, handleOpen}) => {
       };
 
       delete resultValues.photo;
-      console.log('cloneValues = ', resultValues);
       if (id) await mutateAsync({body: resultValues, id});
       handleOpen(false);
     } catch (e: any) {
@@ -110,16 +110,17 @@ export const ViewCard: React.FC<IProps> = ({id, handleOpen}) => {
             <InputEditField name="description" />
           </Stack>
           <Stack direction="row" justifyContent="end" sx={{width: '100%', marginTop: '40px'}}>
-            {Boolean(Object.keys(dirtyFields).length)
-                            && (
-                            <Button
-                              type="submit"
-                              variant="contained"
-                            >
-                              Сохранить
-                            </Button>
-                            )}
+            {Boolean(Object.keys(dirtyFields).length) && (
+              <Button
+                type="submit"
+                variant="contained"
+              >
+                Сохранить
+              </Button>
+            )}
           </Stack>
+
+          {isSuccess && (<OrderBtn product={data} refetch={refetch} />)}
         </form>
       )}
     </Form>

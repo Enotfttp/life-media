@@ -3,6 +3,7 @@ import {Field, FieldProps} from 'react-final-form';
 import {TextField, FormControl, Button, Stack, Box, Input} from '@mui/material';
 import {IMaskInput} from 'react-imask';
 import EditIcon from '@mui/icons-material/Edit';
+import {RolesContext} from 'src/modules/RolesProvider/RolesProvider';
 
 interface CustomProps {
   onChange: (event: {target: {name: string; value: string}}) => void;
@@ -32,16 +33,18 @@ interface Props extends FieldProps<string, any> {
   typeField?: string,
   maxLength?: number,
   multiline?: boolean,
-  width?: string
+  width?: string,
+  availableRole?:boolean
 }
 
 export const InputEditField = ({
   maxLength = 255,
   multiline = false,
   width = '100%',
-  typeField = 'standart',
+  typeField = 'standard',
   ...props
 }: Props) => {
+  const role = React.useContext(RolesContext);
   const [isEdit, setEdit] = React.useState(false);
 
   return (
@@ -81,9 +84,9 @@ export const InputEditField = ({
                   placeholder="+7 (000) 000-0000"
                   {...input}
                   sx={{
-                      padding: '0px',
-                      margin: '0px'
-                    }}
+                    padding: '0px',
+                    margin: '0px'
+                  }}
 
                   inputComponent={TextMaskCustom as any}
                 />
@@ -91,10 +94,10 @@ export const InputEditField = ({
                 <TextField
                   {...input}
                   sx={{
-                      padding: '0px',
-                      margin: '0px',
-                      width: '100%'
-                    }}
+                    padding: '0px',
+                    margin: '0px',
+                    width: '100%'
+                  }}
                   label={props?.label}
                   variant="standard"
                   multiline={multiline}
@@ -104,22 +107,23 @@ export const InputEditField = ({
                 />
               )
               )}
-
-              <Button
-                sx={{
-                  width: '10px',
-                  height: '10px',
-                  backgroundColor: 'transparent',
-                  color: 'transparent'
-                }}
-                component="label"
-                onClick={() => setEdit((prev) => !prev)}
-                startIcon={(
-                  <EditIcon
-                    color="action"
-                  />
-                                )}
-              />
+              {(role === 'admin' || props?.availableRole) && (
+                <Button
+                  sx={{
+                    width: '10px',
+                    height: '10px',
+                    backgroundColor: 'transparent',
+                    color: 'transparent'
+                  }}
+                  component="label"
+                  onClick={() => setEdit((prev) => !prev)}
+                  startIcon={(
+                    <EditIcon
+                      color="action"
+                    />
+                  )}
+                />
+              )}
             </Stack>
           </FormControl>
         );

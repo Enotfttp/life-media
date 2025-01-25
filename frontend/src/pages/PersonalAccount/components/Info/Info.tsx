@@ -65,21 +65,21 @@ export const Info = ({data}: {data?: IUser}) => {
               <Stack direction="row" justifyContent="space-between" spacing={2}>
                 <Box sx={{display: 'flex', flexDirection: 'column', gap: 1, fontSize: '18px'}}>
                   <Typography variant="h6">Фамилия:</Typography>
-                  <InputEditField name="lastname" />
+                  <InputEditField availableRole name="lastname" />
 
                   <Typography variant="h6">Имя:</Typography>
-                  <InputEditField name="firstname" />
+                  <InputEditField availableRole name="firstname" />
 
                   <Typography variant="h6">Отчество:</Typography>
-                  <InputEditField name="patronymic" />
+                  <InputEditField availableRole name="patronymic" />
 
                 </Box>
                 <Box sx={{display: 'flex', flexDirection: 'column', gap: 1, fontSize: '18px'}}>
                   <Typography variant="h6">Номер телефона:</Typography>
-                  <InputEditField name="phone" typeField="phone" />
+                  <InputEditField availableRole name="phone" typeField="phone" />
 
                   <Typography variant="h6">Почта</Typography>
-                  <InputEditField name="email" />
+                  <InputEditField availableRole name="email" />
                 </Box>
               </Stack>
             </Stack>

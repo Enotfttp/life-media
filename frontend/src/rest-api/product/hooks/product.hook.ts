@@ -3,10 +3,10 @@ import {productService} from '../sevices'
 import {IProduct, IProductForm} from "../models";
 
 
-export function useGetProducts() {
+export function usePostProducts(search?:string) {
     return useQuery({
-        queryKey: ['products'],
-        queryFn: () => productService.getProducts(),
+        queryKey: ['products', search],
+        queryFn: async() => await productService.postProducts(search),
         select: data => data.data,
     })
 }

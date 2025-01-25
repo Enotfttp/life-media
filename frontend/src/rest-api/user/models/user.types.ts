@@ -10,7 +10,7 @@ export interface IUser {
     phone: string,
     chat_id: number,
     order_id: number,
-    role_id: number
+    name_role?: string,
 }
 
 export interface IUserForm {

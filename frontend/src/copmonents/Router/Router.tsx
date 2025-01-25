@@ -19,7 +19,6 @@ export const Router = () => {
                   return (<Route key={index} path={child.path} element={child.element} />);
                 })}
               </>
-
             );
           })}
         </Routes>

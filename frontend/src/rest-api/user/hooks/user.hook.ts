@@ -2,22 +2,6 @@ import {IUser, IUserForm} from "src/rest-api/user/models";
 import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
 import {userService} from '../sevices'
 
-// export function useRegistrationUser(body: Omit<IUser, 'chat_id' & 'order_id' & 'role_id'>) {
-//     return useQuery({
-//         queryKey: ['user'],
-//         queryFn: () => userService.registrationUser(body),
-//         select: data => data.data,
-//     })
-// }
-
-// export function useLoginUser(body: { login: string, password: string }) {
-//     return useQuery({
-//         queryKey: ['user'],
-//         queryFn: () => userService.loginUser(body),
-//         select: (data) => data.data,
-//     })
-// }
-
 export function useMutationLoginUser() {
     return useMutation({
         mutationKey: ['user'],

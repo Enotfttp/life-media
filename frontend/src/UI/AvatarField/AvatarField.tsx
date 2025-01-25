@@ -76,8 +76,8 @@ export const AvatarField = ({label, base64, ...props}: IProps) => {
                   tabIndex={-1}
                   endIcon={(
                     <EditIcon
-                        color="action"
-                      />
+                      color="action"
+                    />
                                     )}
                 >
                   <VisuallyHiddenInput

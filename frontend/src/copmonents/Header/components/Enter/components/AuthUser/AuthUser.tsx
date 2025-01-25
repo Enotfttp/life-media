@@ -4,9 +4,11 @@ import MailIcon from '@mui/icons-material/Mail';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import {getCurrentUser} from 'src/rest-api/user/hooks';
 import {useNavigate} from 'react-router';
+import {useGetOrders} from 'src/rest-api/order/hooks';
 
 export const AuthUser = ({userId, setUserId}: {userId: string, setUserId: (id: string | null) => void}) => {
   const {data} = getCurrentUser(userId);
+  const {data: dataOrder} = useGetOrders(userId);
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -27,7 +29,7 @@ export const AuthUser = ({userId, setUserId}: {userId: string, setUserId: (id: s
     setUserId(null);
     localStorage.clear();
   };
-
+  console.log('dataOrder = ', dataOrder);
   return (
     <>
       <IconButton>
@@ -36,7 +38,7 @@ export const AuthUser = ({userId, setUserId}: {userId: string, setUserId: (id: s
         </Badge>
       </IconButton>
       <IconButton>
-        <Badge badgeContent={10} color="primary">
+        <Badge badgeContent={dataOrder?.reduce((acc, {count}) => acc + count, 0)} color="primary" onClick={() => navigate(`basket/${data?.id}`, {replace: false})}>
           <ShoppingBasketIcon color="action" />
         </Badge>
       </IconButton>

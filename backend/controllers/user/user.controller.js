@@ -17,9 +17,8 @@ class UserController {
             const hashPassword = await bcrypt.hash(password, 10);
             const uuid = uuidv4();
 
-
-            const {rows} = await db.query(`INSERT INTO users (id,email, firstname, patronymic, lastname, login, password) values($1,$2, $3, $4,$5, $6, $7) RETURNING *`, [uuid, email, firstname,
-                patronymic, lastname, login, hashPassword]);
+            const {rows} = await db.query(`INSERT INTO users (id ,email, firstname, patronymic, lastname, login, password, role_id) values($1,$2, $3, $4,$5, $6, $7, $8) RETURNING *`, [uuid, email, firstname,
+                patronymic, lastname, login, hashPassword, '1']);
 
             return res.json(rows[0])
         } catch (e) {
@@ -42,7 +41,22 @@ class UserController {
     async getUser(req, res) {
         try {
             const id = req.params.id
-            const {rows} = await db.query(`SELECT * FROM users WHERE id = $1`, [id]);
+            const {rows} = await db.query(`SELECT users.id,
+                    email,
+                    firstName,
+                    patronymic,
+                    lastName,
+                    phone, 
+                    login, 
+                    password,
+                    photo_link,
+                    chat_id,
+                    order_id,
+                    roles.name_role
+                  FROM users
+                  LEFT JOIN roles ON role_id = roles.id
+                  WHERE users.id = $1`, [id]);
+
             if (rows[0]?.photo_link) {
                 const fileBuffer = await fs.readFile((process.cwd() + rows[0]?.photo_link));
                 const base64String = fileBuffer.toString('base64');

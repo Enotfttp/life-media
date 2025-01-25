@@ -21,7 +21,8 @@ create TABLE roles(
 create TABLE orders(
     id VARCHAR(255) PRIMARY KEY,
     order_statuses_id VARCHAR(255),
-    product_id VARCHAR(255)
+    product_id VARCHAR(255),
+    count INTEGER
 );
 
 create TABLE order_statuses(
@@ -71,7 +72,6 @@ create TABLE chat_message(
     chat_status_id VARCHAR(255)
 );
 
-
 create TABLE chat_statuses(
     id VARCHAR(255) PRIMARY KEY,
     is_read boolean
@@ -100,10 +100,9 @@ ALTER TABLE chat_message
 ADD CONSTRAINT fk_chat_message_chat_status_id FOREIGN KEY (chat_status_id) REFERENCES chat_statuses(id) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT fk_chat_message_chat FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
-
-
-
-
-
-
+-- Заготовленные статусы
+INSERT INTO roles (id, name_role) VALUES ('1', 'user'), ('2', 'admin');
+INSERT INTO order_statuses (id, name_status) VALUES ('1', 'Создан'), ('2', 'Принят в работу'), ('3', 'Готов к доставке'), ('4', 'Завершен');
+-- Заготовленный пользователь админ
+INSERT INTO users (id ,email, firstname, patronymic, lastname, login, password, role_id) values('1','dima.lepahin@mail.ru', 'Дмитрий', 'Лепахин','Владимирович', 'dlepakhin', '$2b$10$lSsVGCQEpd0Fm1468EWh8umq.SKKwRCRid0ed51qlrbTPwciB0uai', '2')
 

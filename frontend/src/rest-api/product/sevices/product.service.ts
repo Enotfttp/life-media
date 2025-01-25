@@ -8,8 +8,10 @@ class ProductService {
         return axios.post<IProduct[]>(this.URL + '/create', body)
     }
 
-    getProducts() {
-        return axios.get<IProduct[]>(this.URL + '/list')
+    postProducts(search?:string) {
+        return axios.post<IProduct[]>(this.URL + `/list`, {
+            search
+        })
     }
 
     getProduct(id: string) {
