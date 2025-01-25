@@ -24,7 +24,7 @@ export function useMutationUpdatenOrder() {
 
 export const useGetCurrentOrder = (productId: string, userId: string, options?: { enabled: boolean }) => {
     return useQuery({
-        queryKey: ['order'],
+        queryKey: ['order', productId],
         queryFn: async () => await orderService.getOrder(productId, userId),
         select: (data) => data.data as IOrder,
         ...options

@@ -8,9 +8,6 @@ class OrderController {
     async getOrders(req, res) {
         try {
             const {id: userId} = req.params
-            const {rows: rowsUser} = await db.query(`SELECT * FROM users WHERE id=$1`,[userId]);
-            if(!rowsUser[0]?.order_id) return res.json(null)
-
             const {rows} = await db.query(`SELECT 
                     orders.id,
                     order_statuses.name_status,
@@ -21,7 +18,7 @@ class OrderController {
                   LEFT JOIN products ON orders.product_id = products.id
                   LEFT JOIN order_statuses ON orders.order_statuses_id = order_statuses.id
                   LEFT JOIN photos ON products.id = photos.product_id
-                  WHERE orders.id = $1 `, [rowsUser[0].order_id]);
+                 WHERE user_id=$1`, [userId]);
 
             const newRows = await Promise.all(rows.map(async (elem) => {
                 if(!elem.photo_link){
@@ -43,8 +40,8 @@ class OrderController {
     async getOrder(req, res) {
         try {
             const {userId, productId} = req.query
-            const {rows:rowsUser} = await db.query(`SELECT * FROM users WHERE id=$1`,[userId]);
-            if(!rowsUser[0]?.order_id) return res.json(null)
+            const {rows: curOrder} = await db.query(`SELECT * FROM orders WHERE user_id=$1`,[userId]);
+            if(!curOrder.length) return res.json(null)
 
             const {rows} = await db.query(`SELECT 
                     orders.id,
@@ -56,7 +53,7 @@ class OrderController {
                   LEFT JOIN products ON orders.product_id = products.id
                   LEFT JOIN order_statuses ON orders.order_statuses_id = order_statuses.id
                   LEFT JOIN photos ON products.id = photos.product_id
-                  WHERE orders.id = $1 AND orders.product_id = $2 `, [rowsUser[0].order_id, productId]);
+                  WHERE user_id = $1 AND orders.product_id = $2 `, [userId, productId]);
             if (rows[0]?.photo_link) {
                 const fileBuffer = await fs.readFile((process.cwd() + rows[0]?.photo_link));
                 const base64String = fileBuffer.toString('base64');
@@ -73,25 +70,35 @@ class OrderController {
     async updateOrder(req, res) {
         try {
             const {userId, productId, type} = req.body;
-            const {rows:rowsUser} = await db.query(`SELECT * FROM users WHERE id=$1 `,[userId]);
+            const {rows: allProductsOrder} = await db.query(`SELECT * FROM orders WHERE user_id=$1 `,[userId]);
 
-            if(!rowsUser[0]?.order_id){
+            if(!allProductsOrder.length){
               const uuid = uuidv4();
-              const {rows} =  await db.query(`INSERT INTO orders (id, order_statuses_id, product_id, count) values($1,$2, $3, $4) RETURNING *`, [uuid, '1', productId, 1]);
-              await db.query(`UPDATE users set order_id = $1 WHERE id=$2 RETURNING *`, [uuid, userId]);
+              const {rows} =  await db.query(`INSERT INTO orders (id, order_statuses_id, product_id, user_id, count) values($1,$2, $3, $4, $5) RETURNING *`, [uuid, '1', productId, userId, 1]);
               return res.json(rows[0]);
             }
+            const {rows: currentProduct} =  await db.query(`SELECT * FROM orders WHERE user_id = $1 AND product_id = $2`, [userId, productId]);
+
+            if(!currentProduct?.length) {
+                const uuid = uuidv4();
+                const {rows} =  await db.query(`INSERT INTO orders (id, order_statuses_id, product_id, user_id, count) values($1,$2, $3, $4, $5) RETURNING *`, [uuid, '1', productId, userId, 1]);
+                return res.json(rows[0]);
+            }
+            const {rows: selectProduct} = await db.query(`SELECT * FROM products WHERE id=$1 `, [productId]);
             let rowsOrder;
             if(type === 'minus'){
-                rowsOrder = await db.query(`UPDATE orders set count = count - 1, product_id = $1 WHERE id=$2 RETURNING *`, [productId, rowsUser[0]?.order_id]);
+                if(selectProduct[0].count < 1){
+                    throw new Error('Нельзя заказать больше числа товаров на складе')
+                }
+                rowsOrder = await db.query(`UPDATE orders set count = count - 1 WHERE user_id=$1 AND product_id = $2 RETURNING *`, [userId, productId]);
             }else{
-                rowsOrder = await db.query(`UPDATE orders set count = count + 1, product_id = $1 WHERE id=$2 RETURNING *`, [productId, rowsUser[0]?.order_id]);
+                rowsOrder = await db.query(`UPDATE orders set count = count + 1 WHERE user_id=$1 AND product_id = $2 RETURNING *`, [userId, productId]);
             }
             // Удаление orders и добавление элеменета обратно в продукт
-            if(rowsOrder.rows[0]?.count === 0) {
-                await db.query(`UPDATE users set order_id = null  WHERE id = $1`, [userId]);
-                await db.query(`DELETE FROM orders WHERE id = $1`, [rowsUser[0].order_id]);
+            if(currentProduct[0].count === 1 && type === 'minus' ) {
+                await db.query(`DELETE FROM orders WHERE user_id = $1 AND product_id = $2`, [userId, productId]);
             }
+
             if(type === 'minus'){
                 await db.query(`UPDATE products set count = count + 1  WHERE id = $1`, [productId]);
             }else{

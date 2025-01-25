@@ -9,7 +9,6 @@ create TABLE users(
     password VARCHAR(255),
     photo_link VARCHAR(255),
     chat_id VARCHAR(255),
-    order_id VARCHAR(255),
     role_id VARCHAR(255)
 );
 
@@ -22,6 +21,7 @@ create TABLE orders(
     id VARCHAR(255) PRIMARY KEY,
     order_statuses_id VARCHAR(255),
     product_id VARCHAR(255),
+    user_id VARCHAR(255),
     count INTEGER
 );
 
@@ -80,12 +80,12 @@ create TABLE chat_statuses(
 
 ALTER TABLE users
 ADD CONSTRAINT fk_users_chats FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_users_orders FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT fk_users_roles FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE orders
 ADD CONSTRAINT fk_orders_statuses FOREIGN KEY (order_statuses_id) REFERENCES order_statuses(id) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT fk_orders_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT fk_orders_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT fk_orders_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE descriptions
 ADD CONSTRAINT fk_descriptions_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE;
