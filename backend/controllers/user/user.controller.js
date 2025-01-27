@@ -50,7 +50,6 @@ class UserController {
                     login, 
                     password,
                     photo_link,
-                    chat_id,
                     roles.name_role
                   FROM users
                   LEFT JOIN roles ON role_id = roles.id

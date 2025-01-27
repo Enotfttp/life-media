@@ -1,6 +1,6 @@
 import React from 'react';
 import {RouteObject} from 'react-router';
-import {Main, PersonalAccount, Basket} from 'src/pages';
+import {Main, PersonalAccount, Basket, Chat, ChatAdmin} from 'src/pages';
 
 export const routesConfig: RouteObject[] = [
   {
@@ -12,8 +12,12 @@ export const routesConfig: RouteObject[] = [
     element: <PersonalAccount />
   },
   {
-    path: '/chat',
-    element: null
+    path: '/chats/:id',
+    element: <Chat />
+  },
+  {
+    path: '/chatsAdmin/:id',
+    element: <ChatAdmin />
   },
   {
     path: '/basket',

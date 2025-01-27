@@ -1,5 +1,6 @@
 import React from 'react';
 import {Stack} from '@mui/material';
+import {RolesProvider} from 'src/modules/RolesProvider/RolesProvider';
 import {AuthUser, NotAuthUser} from './components';
 
 export const Enter = () => {
@@ -16,7 +17,9 @@ export const Enter = () => {
       }}
     >
       {userId ? (
-        <AuthUser userId={userId} setUserId={setUserId} />
+        <RolesProvider>
+          <AuthUser userId={userId} setUserId={setUserId} />
+        </RolesProvider>
       ) : (
         <NotAuthUser setUserId={setUserId} />
       )}
