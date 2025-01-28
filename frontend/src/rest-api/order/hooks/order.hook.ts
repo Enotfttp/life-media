@@ -1,6 +1,6 @@
 import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
 import {orderService} from '../sevices'
-import {IOrder} from "src/rest-api/order/models";
+import {IOrder, IOrderStatus} from "src/rest-api/order/models";
 
 export function useMutationDeleteOrder() {
     return useMutation({
@@ -9,14 +9,14 @@ export function useMutationDeleteOrder() {
     })
 }
 
-export function useMutationUpdatenOrder() {
+export function useMutationUpdateOrder() {
     const queryClient = useQueryClient();
     
     return useMutation({
             mutationFn: async (  body: {productId:string, userId:string, type:string }) => await orderService.updateOrder(body),
             onSuccess: () => {
                 queryClient.invalidateQueries({queryKey: ['order']});
-                queryClient.invalidateQueries({queryKey: ['orders']});
+                queryClient.invalidateQueries({queryKey: ['orders-idle']});
             },
         },
     )
@@ -25,8 +25,18 @@ export function useMutationUpdateStatusOrder() {
     const queryClient = useQueryClient();
 
     return useMutation({
-            mutationKey:['orders'],
-            mutationFn: async ( userId: string) => await orderService.updateStatusOrder(userId),
+            mutationFn: async ( body:{userId:string, statusId:string, orderId:string}) => await orderService.updateStatusOrder(body),
+            onSuccess: () => {
+                queryClient.invalidateQueries({queryKey: ['orders']});
+            },
+        },
+    )
+}
+export function useMutationUpdateStatusOrderBasket() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+            mutationFn: async ( userId:string) => await orderService.updateStatusOrderBasket(userId),
             onSuccess: () => {
                 queryClient.invalidateQueries({queryKey: ['orders']});
             },
@@ -42,11 +52,28 @@ export const useGetCurrentOrder = (productId: string, userId: string, options?: 
         ...options
     })
 }
-export const useGetOrders = ( userId: string, options?: { enabled: boolean }) => {
+export const useGetFirstStatusOrders= ( userId: string, options?: { enabled: boolean }) => {
+    return useQuery({
+        queryKey: ['orders-idle'],
+        queryFn: async () => await orderService.getFirstStatusOrders(userId),
+        select: (data) => data.data as IOrder[],
+        ...options
+    })
+}
+
+export const useGetOrders= ( userId: string, options?: { enabled: boolean }) => {
     return useQuery({
         queryKey: ['orders'],
         queryFn: async () => await orderService.getOrders(userId),
         select: (data) => data.data as IOrder[],
         ...options
+    })
+}
+
+export const getOrderStatus = ( ) => {
+    return useQuery({
+        queryKey: ['orders-status'],
+        queryFn: async () => await orderService.getOrderStatus(),
+        select: (data) => data.data as IOrderStatus[],
     })
 }

@@ -5,7 +5,7 @@ const {
 const {promises: fs} = require("fs");
 
 class OrderController {
-    async getOrders(req, res) {
+    async getFirstStatusOrders(req, res) {
         try {
             const {id: userId} = req.params
             const {rows} = await db.query(`SELECT 
@@ -16,6 +16,7 @@ class OrderController {
                     products.cost,
                     products.id as product_id,
                     products.count as product_count,
+                    products.cost as product_cost,
                     descriptions.description,
                     photos.photo_link
                   FROM orders
@@ -44,17 +45,24 @@ class OrderController {
     }
 
 
-    async getOrdersBasket(req, res) {
+    async getOrders(req, res) {
         try {
             const {id: userId} = req.params
-            const {rows} = await db.query(`SELECT 
+            const {rows: userRows} = await db.query(`SELECT * from users WHERE id = $1`,[userId]);
+            let resRows;
+            console.log('userRows[0] = ',userRows)
+            // user = 1
+            if(userRows[0].role_id === '1'){
+                const {rows} = await db.query(`SELECT 
                     orders.id,
                     orders.count,
+                    orders.order_statuses_id,
                     order_statuses.name_status,
                     products.name_product,
                     products.cost,
                     products.id as product_id,
                     products.count as product_count,
+                    products.cost as product_cost,
                     descriptions.description,
                     photos.photo_link
                   FROM orders
@@ -62,11 +70,41 @@ class OrderController {
                   LEFT JOIN descriptions ON descriptions.product_id = products.id
                   LEFT JOIN order_statuses ON orders.order_statuses_id = order_statuses.id
                   LEFT JOIN photos ON products.id = photos.product_id
-                 WHERE user_id=$1 AND orders.order_statuses_id = '1'
+                 WHERE user_id=$1 AND orders.order_statuses_id != '1'
                  ORDER BY orders.id
                  `, [userId]);
+                resRows = rows;
+            } else{
 
-            const newRows = await Promise.all(rows.map(async (elem) => {
+            const {rows} = await db.query(`SELECT 
+                    orders.id,
+                    orders.count,
+                    orders.user_id,
+                    orders.order_statuses_id,
+                    order_statuses.name_status,
+                    products.name_product,
+                    products.cost,
+                    products.id as product_id,
+                    products.count as product_count,
+                    products.cost as product_cost,
+                    descriptions.description,
+                    users.firstName, 
+                    users.patronymic, 
+                    users.lastName,
+                    photos.photo_link
+                  FROM orders
+                  LEFT JOIN products ON orders.product_id = products.id
+                  LEFT JOIN descriptions ON descriptions.product_id = products.id
+                  LEFT JOIN order_statuses ON orders.order_statuses_id = order_statuses.id
+                  LEFT JOIN photos ON products.id = photos.product_id
+                  LEFT JOIN users ON users.id = orders.user_id
+                  WHERE orders.order_statuses_id != '1'
+                 ORDER BY orders.id
+                 `);
+                resRows = rows;
+            }
+
+            const newRows = await Promise.all(resRows.map(async (elem) => {
                 if(!elem.photo_link){
                     return ({...elem, photo_link: null})
                 }
@@ -174,12 +212,23 @@ class OrderController {
         }
     }
 
-    async updateStatusOrder(req, res) {
+    async updateStatusOrderBasket(req, res) {
         try {
             const id = req.params.id
             const {rows} =  await db.query(`UPDATE orders set order_statuses_id ='2' WHERE user_id=$1 AND order_statuses_id != '2' AND order_statuses_id != '3'  AND order_statuses_id != '4' RETURNING *`, [id]);
 
-            res.json(rows);
+            return res.json(rows);
+        } catch (e) {
+            console.error('Ошибка во время удаления пользователя:', e);
+            return res.status(400).json({error: e.message});
+        }
+    }
+    async updateStatusOrder(req, res) {
+        try {
+            const {userId, statusId, orderId} = req.body;
+            const {rows} =  await db.query(`UPDATE orders set order_statuses_id = $1 WHERE user_id=$2 AND id = $3 RETURNING *`, [statusId, userId, orderId]);
+
+            return res.json(rows);
         } catch (e) {
             console.error('Ошибка во время удаления пользователя:', e);
             return res.status(400).json({error: e.message});

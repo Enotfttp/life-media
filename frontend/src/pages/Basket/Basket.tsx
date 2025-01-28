@@ -1,6 +1,10 @@
 import * as React from 'react';
 import {useParams} from 'react-router-dom';
-import {useGetOrders, useMutationUpdateStatusOrder} from 'src/rest-api/order/hooks';
+import {
+  useGetFirstStatusOrders,
+  useMutationUpdateStatusOrder,
+  useMutationUpdateStatusOrderBasket
+} from 'src/rest-api/order/hooks';
 import {Avatar, ListItem, List, ListItemAvatar, ListItemText, Grid, Divider, Paper, Button, ImageListItem, Flex} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import {OrderBtn} from 'src/pages/Basket/components/OrderBtn';
@@ -10,8 +14,8 @@ export const Basket: React.FC = () => {
   if (!userId) {
     throw new Error('Данный пользователь не был найден');
   }
-  const {data: dataOrder} = useGetOrders(userId);
-  const {mutateAsync} = useMutationUpdateStatusOrder();
+  const {data: dataOrder} = useGetFirstStatusOrders(userId);
+  const {mutateAsync} = useMutationUpdateStatusOrderBasket();
 
   const handleClick = async () => {
     await mutateAsync(userId);
@@ -129,7 +133,19 @@ export const Basket: React.FC = () => {
             ))}
           </List>
         </Paper>
-        <Grid item xs={12}>
+        <Grid
+          container
+          xs={12}
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <Typography gutterBottom variant="h6">
+            Сумма к доставке:
+            {' '}
+            {dataOrder.reduce((acc, {count, product_cost}) => acc + count * product_cost, 0)}
+          </Typography>
           <Button
             variant="contained"
             onClick={handleClick}

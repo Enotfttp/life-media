@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Button, Stack, ButtonGroup, Typography} from '@mui/material';
-import {useGetCurrentOrder, useMutationUpdatenOrder} from 'src/rest-api/order/hooks';
+import {useGetCurrentOrder, useMutationUpdateOrder} from 'src/rest-api/order/hooks';
 import {IProduct} from 'src/rest-api/product/models';
 
 export const OrderBtn = ({product, refetch}:{product?: IProduct, refetch():void}) => {
@@ -8,7 +8,7 @@ export const OrderBtn = ({product, refetch}:{product?: IProduct, refetch():void}
   if (!userId) return null;
 
   const {data: dataOrder} = useGetCurrentOrder(product!.id, userId);
-  const {mutateAsync} = useMutationUpdatenOrder();
+  const {mutateAsync} = useMutationUpdateOrder();
   const updateCount = async (event: any) => {
     const type = event.target?.getAttribute('data-type');
     await mutateAsync({productId: product!.id, userId, type});
@@ -22,6 +22,7 @@ export const OrderBtn = ({product, refetch}:{product?: IProduct, refetch():void}
           variant="contained"
           data-type="plus"
           onClick={updateCount}
+          disabled={product!.count === 0}
         >
           Добавить в корзину
         </Button>

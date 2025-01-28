@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
+// import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import {ErrorBoundary} from 'src/modules';
 import {Router} from './copmonents/Router/Router';
 import reportWebVitals from './reportWebVitals';
@@ -18,7 +18,7 @@ root.render(
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <Router />
-        <ReactQueryDevtools initialIsOpen />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </ErrorBoundary>
   </React.StrictMode>

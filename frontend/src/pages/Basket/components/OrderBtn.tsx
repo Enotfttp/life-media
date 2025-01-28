@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {Button, Stack, ButtonGroup, Typography} from '@mui/material';
-import {useGetCurrentOrder, useMutationUpdatenOrder} from 'src/rest-api/order/hooks';
+import {useGetCurrentOrder, useMutationUpdateOrder} from 'src/rest-api/order/hooks';
 import {IProduct} from 'src/rest-api/product/models';
 
 export const OrderBtn = ({order}:{order?: any}) => {
   const userId = localStorage.getItem('id');
   if (!userId) return null;
 
-  const {mutateAsync} = useMutationUpdatenOrder();
+  const {mutateAsync} = useMutationUpdateOrder();
 
   const updateCount = async (event: any) => {
     const type = event.target?.getAttribute('data-type');
