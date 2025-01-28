@@ -9,7 +9,6 @@ export const OrderBtn = ({product, refetch}:{product?: IProduct, refetch():void}
 
   const {data: dataOrder} = useGetCurrentOrder(product!.id, userId);
   const {mutateAsync} = useMutationUpdatenOrder();
-
   const updateCount = async (event: any) => {
     const type = event.target?.getAttribute('data-type');
     await mutateAsync({productId: product!.id, userId, type});
@@ -51,7 +50,7 @@ export const OrderBtn = ({product, refetch}:{product?: IProduct, refetch():void}
           >
             {dataOrder?.count ?? 0}
           </Typography>
-          <Button onClick={updateCount} data-type="plus" disabled={dataOrder?.count >= product!.count}>+</Button>
+          <Button onClick={updateCount} data-type="plus" disabled={product!.count === 0}>+</Button>
         </ButtonGroup>
       ) }
     </Stack>

@@ -10,12 +10,18 @@ class OrderService {
                 productId:productId
             }})
     }
+
     getOrders(userId: string) {
         return axios.get<IOrder[]>(`${this.URL}s/${userId}`)
     }
 
+
     updateOrder(body: { productId:string, userId:string, type:string }) {
         return axios.put<IOrder>(this.URL + `/update`,body)
+    }
+
+    updateStatusOrder(userId: string) {
+        return axios.put<IOrder>(this.URL + `/update-status/${userId}`)
     }
 
     deleteOrder(id: string) {

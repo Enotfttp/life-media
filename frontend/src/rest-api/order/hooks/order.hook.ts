@@ -21,6 +21,18 @@ export function useMutationUpdatenOrder() {
         },
     )
 }
+export function useMutationUpdateStatusOrder() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+            mutationKey:['orders'],
+            mutationFn: async ( userId: string) => await orderService.updateStatusOrder(userId),
+            onSuccess: () => {
+                queryClient.invalidateQueries({queryKey: ['orders']});
+            },
+        },
+    )
+}
 
 export const useGetCurrentOrder = (productId: string, userId: string, options?: { enabled: boolean }) => {
     return useQuery({

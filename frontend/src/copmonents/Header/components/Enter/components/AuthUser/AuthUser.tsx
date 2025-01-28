@@ -5,13 +5,11 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import {getCurrentUser} from 'src/rest-api/user/hooks';
 import {useNavigate} from 'react-router';
 import {useGetOrders} from 'src/rest-api/order/hooks';
-import {useGetChats} from 'src/rest-api/chats/hooks/chat.hook';
 import {RolesContext} from 'src/modules/RolesProvider/RolesProvider';
 
 export const AuthUser = ({userId, setUserId}: {userId: string, setUserId: (id: string | null) => void}) => {
   const {data} = getCurrentUser(userId);
   const {data: dataOrder} = useGetOrders(userId);
-  const {data: dataChats} = useGetChats(userId);
   const role = React.useContext(RolesContext);
 
   const navigate = useNavigate();

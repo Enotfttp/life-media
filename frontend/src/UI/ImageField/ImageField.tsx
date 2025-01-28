@@ -4,6 +4,7 @@ import {Button, FormControl, Avatar} from '@mui/material';
 import {Field, FieldProps} from 'react-final-form';
 import {fileToBase64} from 'src/helpers/utils';
 import EditIcon from '@mui/icons-material/Edit';
+import {RolesContext} from 'src/modules/RolesProvider/RolesProvider';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -26,6 +27,7 @@ interface IProps extends FieldProps<string, any> {
 
 export const ImageField = ({label, base64, ...props}: IProps) => {
   const [selectedFile, setSelectedFile] = React.useState<any>(null);
+  const role = React.useContext(RolesContext);
 
   return (
     <>
@@ -45,7 +47,7 @@ export const ImageField = ({label, base64, ...props}: IProps) => {
           return (
             <>
               <FormControl
-                sx={{position: 'relative', width: '100%', height: '400px'}}
+                sx={{position: 'relative', width: '100%', height: '450px'}}
                 variant="outlined"
               >
                 <Avatar
@@ -60,11 +62,11 @@ export const ImageField = ({label, base64, ...props}: IProps) => {
                     zIndex: 999
                   }}
                 />
-
+                {role === 'admin' && (
                 <Button
                   sx={{
                     position: 'absolute',
-                    top: 0,
+                    bottom: 0,
                     right: 0,
                     backgroundColor: 'transparent',
                     zIndex: 999,
@@ -78,7 +80,7 @@ export const ImageField = ({label, base64, ...props}: IProps) => {
                     <EditIcon
                       color="action"
                     />
-                                    )}
+                  )}
                 >
                   <VisuallyHiddenInput
                     {...input}
@@ -89,6 +91,7 @@ export const ImageField = ({label, base64, ...props}: IProps) => {
                   />
 
                 </Button>
+                )}
               </FormControl>
             </>
           );

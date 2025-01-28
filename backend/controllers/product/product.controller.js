@@ -58,7 +58,9 @@ class ProductController {
                                             descriptions d ON p.id = d.product_id
                                         LEFT JOIN 
                                             photos ph ON p.id = ph.product_id
-                                        WHERE LOWER(p.name_product) LIKE LOWER($1)`, ['%' + search + '%'])
+                                        WHERE LOWER(p.name_product) LIKE LOWER($1)
+                                        ORDER BY p.id
+                                        `, ['%' + search + '%'])
                 resultRows = rows;
             }else{
             const {rows} = await db.query(`SELECT 
@@ -78,8 +80,8 @@ class ProductController {
                                         INNER JOIN 
                                             descriptions d ON p.id = d.product_id
                                         LEFT JOIN 
-                                            photos ph ON p.id = ph.product_id`)
-
+                                            photos ph ON p.id = ph.product_id
+                                        ORDER BY p.id`)
                 resultRows = rows;
             }
 

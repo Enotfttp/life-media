@@ -20,7 +20,7 @@ export const routesConfig: RouteObject[] = [
     element: <ChatAdmin />
   },
   {
-    path: '/basket',
+    path: '/basket/:id',
     element: <Basket />
   }
 ];
