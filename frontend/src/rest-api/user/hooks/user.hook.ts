@@ -27,6 +27,13 @@ export function useMutationUpdatenUser() {
         },
     )
 }
+export function useMutatioDeleteUser() {
+
+    return useMutation({
+            mutationFn: async (userId:string) => await userService.deleteUser(userId),
+        },
+    )
+}
 
 export const getCurrentUser = (id: string) => {
     return useQuery({

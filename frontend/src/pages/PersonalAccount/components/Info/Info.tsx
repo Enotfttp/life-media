@@ -1,16 +1,19 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import {cloneDeep} from 'lodash';
-import {Stack, Typography, Box, Button, Alert} from '@mui/material';
+import {Stack, Typography, Box, Button, Alert, Grid} from '@mui/material';
 import {Form} from 'react-final-form';
 import {IUserForm, IUser} from 'src/rest-api/user/models';
 import {AvatarField, InputEditField} from 'src/UI';
-import {useMutationUpdatenUser} from 'src/rest-api/user/hooks';
+import {useMutatioDeleteUser, useMutationUpdatenUser} from 'src/rest-api/user/hooks';
+import {useNavigate} from 'react-router';
 
 export const Info = ({data}: {data?: IUser}) => {
   const {id} = useParams();
   const {mutateAsync} = useMutationUpdatenUser();
+  const {mutateAsync: mutateAsyncDelete} = useMutatioDeleteUser();
   const [error, setError] = React.useState('');
+  const navigate = useNavigate();
 
   const initialState: IUserForm = React.useMemo(() => ({
     email: data?.email ?? '-',
@@ -32,6 +35,12 @@ export const Info = ({data}: {data?: IUser}) => {
       setError(e?.response?.data?.error || 'Произошла ошибка');
     }
   };
+  const handleDelete = async () => {
+    if (!id) return;
+    await mutateAsyncDelete(id);
+    localStorage.clear();
+    navigate('/');
+  };
 
   return (
     <Form<IUserForm>
@@ -51,12 +60,32 @@ export const Info = ({data}: {data?: IUser}) => {
             </Alert>
           )}
           <Stack direction="row" justifyContent="space-between" sx={{marginBottom: '100px', width: '90%'}}>
-
-            <AvatarField
-              name="photo"
-              onChange={(val) => form.change('photo_link', val)}
-              base64={values.photo_link}
-            />
+            <Grid
+              item
+              sx={{
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
+              <AvatarField
+                name="photo"
+                onChange={(val) => form.change('photo_link', val)}
+                base64={values.photo_link}
+              />
+              <Button
+                variant="text"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  background: 'transparent',
+                  color: 'red',
+                  fontSize: '16px'
+                }}
+                onClick={handleDelete}
+              >
+                Удалить аккаунт
+              </Button>
+            </Grid>
 
             <Stack direction="column" spacing={2}>
               <Typography id="transition-modal-title" variant="h4">
