@@ -158,7 +158,9 @@ class OrderController {
               const uuid = uuidv4();
 
             if(!allProductsOrder.length){
+                console.log('test')
               const {rows} =  await db.query(`INSERT INTO orders (id, order_statuses_id, product_id, user_id, count) values($1,$2, $3, $4, $5) RETURNING *`, [uuid, '1', productId, userId, 1]);
+              await db.query(`UPDATE orders set count = count - 1 WHERE user_id=$1 AND product_id = $2 RETURNING *`, [userId, productId]);
               return res.json(rows[0]);
             }
             const {rows: currentProduct} =  await db.query(`SELECT * FROM orders WHERE user_id = $1 AND product_id = $2`, [userId, productId]);
@@ -166,6 +168,7 @@ class OrderController {
             if(!currentProduct?.length) {
                 const uuid = uuidv4();
                 const {rows} =  await db.query(`INSERT INTO orders (id, order_statuses_id, product_id, user_id, count) values($1,$2, $3, $4, $5) RETURNING *`, [uuid, '1', productId, userId, 1]);
+                await db.query(`UPDATE orders set count = count - 1 WHERE user_id=$1 AND product_id = $2 RETURNING *`, [userId, productId]);
                 return res.json(rows[0]);
             }
             const {rows: selectProduct} = await db.query(`SELECT * FROM products WHERE id=$1 `, [productId]);
