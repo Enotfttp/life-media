@@ -31,6 +31,7 @@ io.on('connection', (socket) => {
 
         socket.on('joinRoom', async ({ userId, room}) => {
             try {
+                console.log('userId = ',userId,room)
                 const existingUser = await db.query(`SELECT * FROM chats WHERE user_id = $1 `, [userId]);
                 const uuid = uuidv4();
                 if (!existingUser.rows[0]?.room_id && !room) {

@@ -16,7 +16,7 @@ export const Chat = () => {
   const [roomId, setRoomId] = useState<string>('');
   const [messages, setMessages] = useState<any[]>([]);
   const [inputMessage, setInputMessage] = useState('');
-
+  console.log('messages = ', messages);
   const sendMessage = () => {
     if (inputMessage.trim()) {
       socket.emit('sendMessage', {
@@ -83,7 +83,7 @@ export const Chat = () => {
                     }}
                   >
                     <ListItemAvatar>
-                      <Avatar alt="Я" />
+                      <Avatar alt="Я" src={`data:image/jpeg;base64,${message?.photo_link}`} />
                     </ListItemAvatar>
                     <ListItemText
                       primary="Я"
@@ -122,6 +122,7 @@ export const Chat = () => {
                     <ListItemAvatar>
                       <Avatar
                         alt={`${message.lastname} ${message.firstname} ${message.patronymic}`}
+                        src={`data:image/jpeg;base64,${message?.photo_link}`}
                         sx={{
                           float: 'right'
                         }}

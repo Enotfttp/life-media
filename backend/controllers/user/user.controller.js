@@ -80,7 +80,7 @@ class UserController {
             // Сохранение пути к изображению в базу данных
             const imageUrl = `/public/userAvatar/${path.basename(imagePath)}`;
 
-            const {rows} = await db.query(`UPDATE users set firstName = $1, lastname = $2, patronymic = $3 , phone = $4 , photo_link = $5 , email = $6  WHERE id = $7 RETURNING *`, [firstname, lastname, patronymic, phone, imageUrl, email, id]);
+            const {rows} = await db.query(`UPDATE users set firstName = $1, lastname = $2, patronymic = $3 , phone = $4 , photo_link = $5   WHERE id = $6 RETURNING *`, [firstname, lastname, patronymic, phone, imageUrl, id]);
 
             res.json(rows[0]);
         } catch (e) {

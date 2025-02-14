@@ -51,28 +51,31 @@ export const ChatAdmin = () => {
       >
         <List sx={{color: '#d3d3d3'}}>
           {Boolean(dataChats?.length) && dataChats?.map((chat) => (
-            <ListItem
-              alignItems="flex-start"
-              key={chat.id}
-              onClick={() => {
-                setRoomId(chat.room_id);
-                socket.emit('joinRoom', {userId, room: chat.room_id});
-              }}
-              sx={{
-                margin: '10px',
-                height: '50px',
-                borderRadius: '25px',
-                color: '#000',
-                cursor: 'pointer'
-              }}
-            >
-              <ListItemAvatar>
-                <Avatar alt={`${chat.lastname} ${chat.firstname} ${chat.patronymic}`} src={`data:image/jpeg;base64,${chat.photo_link}`} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={`${chat.lastname} ${chat.firstname} ${chat.patronymic}`}
-              />
-            </ListItem>
+            <>
+              <ListItem
+                alignItems="flex-start"
+                key={chat.id}
+                onClick={() => {
+                  setRoomId(chat.room_id);
+                  socket.emit('joinRoom', {userId, room: chat.room_id});
+                }}
+                sx={{
+                  margin: '40px 0px',
+                  height: '50px',
+                  borderRadius: '25px',
+                  color: '#000',
+                  cursor: 'pointer'
+                }}
+              >
+                <ListItemAvatar>
+                  <Avatar alt={`${chat.lastname} ${chat.firstname} ${chat.patronymic}`} src={`data:image/jpeg;base64,${chat.photo_link}`} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${chat.lastname} ${chat.firstname} ${chat.patronymic}`}
+                />
+              </ListItem>
+              <hr />
+            </>
           ))}
         </List>
       </Grid>
@@ -111,7 +114,7 @@ export const ChatAdmin = () => {
                         }}
                       >
                         <ListItemAvatar>
-                          <Avatar alt="Я" src={`data:image/jpeg;base64,${messages?.photo_link}`} />
+                          <Avatar alt="Я" src={`data:image/jpeg;base64,${message?.photo_link}`} />
                         </ListItemAvatar>
                         <ListItemText
                           primary="Я"
@@ -150,7 +153,7 @@ export const ChatAdmin = () => {
                         <ListItemAvatar>
                           <Avatar
                             alt={`${message.lastname} ${message.firstname} ${message.patronymic}`}
-                            src={`data:image/jpeg;base64,${messages?.photo_link}`}
+                            src={`data:image/jpeg;base64,${message?.photo_link}`}
                             sx={{
                               float: 'right'
                             }}
